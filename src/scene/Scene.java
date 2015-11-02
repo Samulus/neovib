@@ -44,5 +44,11 @@ public class Scene {
          return;
       Scene.current.logic();
    }
+   
+   // Test
+   public static void main(String[] args) {
+      Scene.focus("");
+      
+   }
 
 }
