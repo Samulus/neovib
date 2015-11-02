@@ -16,3 +16,7 @@ audio/
 .classpath
 .project
 bin/
+*.mp3
+*.m4a
+*.flac
+*.ogg
