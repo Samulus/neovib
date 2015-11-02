@@ -10,8 +10,12 @@ public class Scene {
    private static AbstractScene current = null;
    public  static PApplet p = null;
 
-   public static void init(PApplet p) {
+   public static void setContext(PApplet p) {
       Scene.p = p;
+
+   }
+   
+   public static void initScenes() {
       Scene.p.textFont(Scene.p.createFont("data/ostrich-regular.ttf", 64));
       Scene.list.put("Title", new Title());
       Scene.list.put("Debug", new Debug());
