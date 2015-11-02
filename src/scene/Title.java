@@ -29,7 +29,8 @@ public class Title extends AbstractScene {
 
        /* switch state */
        else if (event == VibEvent.INPUT_ACCEPT) {
-          System.out.println("This is the part where we switch to " + options[selected]);
+          if (options[selected].equals("debug"))
+             EQ.enqueue(VibEvent.SCENE_DEBUG);
          //Scene.focus("Debug");
        }
 
@@ -53,7 +54,7 @@ public class Title extends AbstractScene {
 
        for (int i=0; i < this.options.length; ++i) {
          if (i == selected)
-           Scene.p.text(options[i], Scene.p.random(3), Scene.p.random(3));
+           Scene.p.text(options[i], Scene.p.random(6), Scene.p.random(6));
          else
             Scene.p.text(options[i], 0, 0);
          Scene.p.translate(128, 0);
