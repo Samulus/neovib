@@ -5,6 +5,8 @@ import src.input.Input;
 import src.scene.Scene;
 
 public class Neovib extends PApplet {
+   
+   boolean tested = false;
   
    public void settings() {
       size(1280, 720, P3D);
@@ -12,12 +14,18 @@ public class Neovib extends PApplet {
    }
    
    public void setup() {   
-      Scene.init(this);
+      Scene.setContext(this); // always call first
+      Scene.initScenes();
       Scene.focus("Title");
    }
    
    public void draw() {
       Input.poll(key);
+      
+      if (tested)
+         println("Testsuccessful");
+      
+     // EQFlood(); // happens once, for test, use whenfocusong on Title
       
       while (true) {
 
@@ -33,12 +41,12 @@ public class Neovib extends PApplet {
                break;
             
             /* scenes */
-            case SCENE_TITLE: Scene.focus("Title"); break;
-            case SCENE_GAME:  Scene.focus("Game"); break;
+            case SCENE_TITLE:  Scene.focus("Title"); break;
+            case SCENE_DEBUG:  Scene.focus("Debug"); break;
             case SCENE_AUDIO_LAG: 
             case SCENE_VIDEO_LAG:
             case SCENE_BROWSER:
-            case SCENE_DEBUG:
+            case SCENE_GAME:
             case SCENE_SETTINGS:
                System.out.printf("[%s scene not implemented yet]\n", event);
                break;
@@ -60,6 +68,19 @@ public class Neovib extends PApplet {
       Scene.logic();
       Scene.render();
     
+   }
+   
+   
+   /* Test */
+   public void EQFlood() {
+      if (this.tested) return;
+      this.tested = true;
+      for (int i=0; i < 10; ++i) {
+         EQ.enqueue(VibEvent.INPUT_RIGHT);
+      }
+      for (int i=0; i < 10; ++i) {
+         EQ.enqueue(VibEvent.INPUT_LEFT);
+      }
    }
    
    public static void main(String[] args) {
