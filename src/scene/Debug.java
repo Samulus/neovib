@@ -1,16 +1,29 @@
 package src.scene;
 
 import processing.core.PApplet;
+import java.util.ArrayList;
+import src.audio.Audio;
+import src.audio.Beat;
+import src.audio.Detector;
 import src.event.VibEvent;
+
+// good:
+
 
 public class Debug extends AbstractScene {
 
-   // private Audio player;
+   private Audio audio;
+   private Beat beat; 
    private float size = 32;
 
    public void setup() {
-      Scene.p.background(0);
-      //globalAudio.play();
+      Scene.p.stroke(255);
+      String fpath = "samson.mp3";
+      audio = new Audio(fpath, 1024);
+      ArrayList<Float> blist = Detector.load(fpath);
+      System.out.println(blist.size());// block for a few 1-2 second
+      beat = new Beat(blist);
+      audio.play();
    }
 
    public void render() {
@@ -20,7 +33,7 @@ public class Debug extends AbstractScene {
       Scene.p.textSize(this.size);
       this.size = PApplet.constrain(this.size * 0.95f, 32f, 64f);
       if (this.size >= 40)
-         Scene.p.text("Beat", Scene.p.random(5), Scene.p.random(5));
+         Scene.p.text("Beat", Scene.p.random(1), Scene.p.random(1));
       else
          Scene.p.text("Beat", 0, 0);
 
@@ -28,13 +41,9 @@ public class Debug extends AbstractScene {
    }
    
    public void logic() {
-
-      /*
-      if (globalBeat.detect(globalAudio.position())) {
+      if (this.beat.detect(this.audio.position())) {
          this.size = 64;
       }
-      */
-
    }
 
    public void input(VibEvent event) {}
