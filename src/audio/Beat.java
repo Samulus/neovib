@@ -1,17 +1,21 @@
 package src.audio;
+import java.util.ArrayList;
+
 public class Beat {
 
   private float dst = 0.0f;
-  private float[] beats = null;
+  private ArrayList<Float> beats = null;
   private int currBeat = 0;
 
-  public Beat(float[] beats) {
+  public Beat(ArrayList<Float> beats) {
     this.beats = beats;
   }
 
   public boolean detect(float pos) {
     pos /= 1000.0f;
-    float beatTime = this.beats[currBeat];
+    if (currBeat >= this.beats.size())
+       return false;
+    float beatTime = this.beats.get(currBeat);
     this.dst = Math.abs(pos - beatTime);
 
     /* Beat Detected */
