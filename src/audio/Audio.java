@@ -1,17 +1,17 @@
 package src.audio;
-//import ddf.minim.*;
+import ddf.minim.*;
+import src.scene.Scene;
 
 public class Audio {
-
-   /*
+  
   Minim minim;
   AudioPlayer song;
   float[] beats;
 
 
-  public Audio(PApplet context, String fpath, int buffer) {
-    this.minim = new Minim(context);
-    this.song = minim.loadFile(fpath, buffer);
+  public Audio(String fpath, int sampleRate) {
+    this.minim = new Minim(Scene.p);
+    this.song = minim.loadFile(fpath, sampleRate);
   }
 
   public void play() {
@@ -24,8 +24,8 @@ public class Audio {
 
   // returns -1 on end of song
   public float nextBeat() {
-    return 0.0;
+    return 0.0f;
   }
-  */
+  
 
 }
