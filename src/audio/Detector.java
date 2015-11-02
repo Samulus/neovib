@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import be.tarsos.dsp.*;
 import be.tarsos.dsp.io.jvm.*;
 import be.tarsos.dsp.util.fft.FFT;
-import be.tarsos.dsp.filters.LowPassSP;
+//import be.tarsos.dsp.filters.LowPassSP;
 import be.tarsos.dsp.filters.LowPassFS;
-import be.tarsos.dsp.filters.*;
-import be.tarsos.dsp.io.TarsosDSPAudioFormat;
-import be.tarsos.dsp.io.jvm.AudioPlayer;
-import be.tarsos.dsp.io.PipedAudioStream;
+import be.tarsos.dsp.util.fft.HammingWindow;
+//import be.tarsos.dsp.filters.*;
+//import be.tarsos.dsp.io.TarsosDSPAudioFormat;
+//import be.tarsos.dsp.io.jvm.AudioPlayer;
+//import be.tarsos.dsp.io.PipedAudioStream;
 
 public class Detector {
 
    static final int CUTOFF = 20; // 20
-   static final float MEAN = 1.4f; // 1.45f;
-   static final float DST = 0.4f; // 0.1
+   static final float MEAN = 1.5f; // 1.45f;
+   static final float DST = 0.3f; // 0.1
 
-   public static ArrayList<Float> load(String[] args) {
+   public static ArrayList<Float> load(String fpath) {
       
 
       File f = null;
@@ -25,9 +26,9 @@ public class Detector {
       final FFT fft = new FFT(1024);
 
       try {
-         f = new File("samson.mp3");
+         f = new File(fpath);
       } catch (Exception e) {
-         System.out.printf("Unable to open %s\n", args[0]);
+         System.out.printf("Unable to open %s\n", fpath);
          return null;
       }
 
@@ -38,18 +39,20 @@ public class Detector {
          return null;
       }
       
+      System.out.println(f.getName());
 
-      /* copied from http://www.badlogicgames.com/wordpress/?cat=18 */
+      /* copied and adapted slightly from http://www.badlogicgames.com/wordpress/?cat=18 */
       /* thanks badlogic games */
       
       final ArrayList<Float> output = new ArrayList<Float>();
-      
+      final HammingWindow h = new HammingWindow();
       /*
        * Beat Detection
        * 
        */
       
       AudioProcessor beats = new AudioProcessor() {
+         
 
          float[] spectrum = new float[1024 / 2 + 1];
          float[] lastSpectrum = new float[1024 / 2 + 1];
@@ -57,18 +60,20 @@ public class Detector {
          ArrayList<Float> threshould = new ArrayList<Float>();
          ArrayList<Float> pruned = new ArrayList<Float>();
          ArrayList<Float> peaks = new ArrayList<Float>();
+         //ArrayList<Float> output = new ArrayList<Float>();
        
 
          @Override
          public boolean process(AudioEvent audioEvent) {
            float[] buff = audioEvent.getFloatBuffer();
+           h.apply(buff);
            fft.forwardTransform(buff);
 
             /* update float buffers */
             System.arraycopy(spectrum, 0, lastSpectrum, 0, spectrum.length);
             System.arraycopy(buff, 0, spectrum, 0, spectrum.length);
 
-            /* calculate flux */
+            /* calculate spectrual flux (distance variance between each height) */
             float flux = 0;
             for (int i = 0; i < spectrum.length; ++i) {
                float value = (spectrum[i] - lastSpectrum[i]);
@@ -82,7 +87,7 @@ public class Detector {
          @Override
          public void processingFinished() {
 
-            /* Use threshould to eliminate noise */
+            /* Use threshold to eliminate noise */
             /* its the running average of the spectral flux function */
             /* we can detect outliers which indicate a rhythmic onset / beat */
             for (int i = 0; i < spectralFlux.size(); i++) {
@@ -97,7 +102,7 @@ public class Detector {
                threshould.add(mean * MEAN);
             }
 
-            /* disregard beats thatare not equal to or above the threshould */
+            /* disregard beats thatare not equal to or above the threshold */
             for (int i = 0; i < threshould.size(); ++i) {
 
                float value = (threshould.get(i) <= spectralFlux.get(i)) ? spectralFlux.get(i) - threshould.get(i) : 0;
@@ -113,6 +118,8 @@ public class Detector {
 
             int count = 0;
             float avg = 0.0f;
+            //avg = 0.0f;
+            //System.out.println(avg); // shut up eclipse
             
             float prev = 0.0f;
 
@@ -131,14 +138,14 @@ public class Detector {
 
             }
 
-            System.out.println("---");
-            System.out.println(count);
+          System.out.println("---");
+          System.out.println(count);
 
          };
       };
       
       //dispatcher.addAudioProcessor(new HighPass(200.f, 1024));
-      dispatcher.addAudioProcessor(new LowPassFS(100.0f, 1024));
+      //dispatcher.addAudioProcessor(new LowPassFS(100.0f, 1024));
      // dispatcher.addAudioProcessor(new HighPass(500.0f, 1024));
 
       dispatcher.addAudioProcessor(beats);
@@ -148,6 +155,6 @@ public class Detector {
    }
    
    public static void main(String[] args) {
-      Detector.load(args);
+      Detector.load("deadsound.mp3");
    }
 }
