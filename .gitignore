@@ -19,3 +19,6 @@ bin/
 *.m4a
 *.flac
 *.ogg
+.idea/
+Makefile
+neovib.iml
