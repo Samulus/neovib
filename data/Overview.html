@@ -3,16 +3,17 @@
 <!-- saved from url=(0021)http://tiddlywiki.com -->
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />		<!-- Force IE standards mode for Intranet and HTA - should be the first meta -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="application-name" content="TiddlyWiki" />
-<meta name="generator" content="TiddlyWiki" />
-<meta name="tiddlywiki-version" content="5.1.9" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="copyright" content="TiddlyWiki created by Jeremy Ruston, (jeremy [at] jermolene [dot] com)
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Force IE standards mode for Intranet and HTA - should be the first meta -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="application-name" content="TiddlyWiki"/>
+    <meta name="generator" content="TiddlyWiki"/>
+    <meta name="tiddlywiki-version" content="5.1.9"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="copyright" content="TiddlyWiki created by Jeremy Ruston, (jeremy [at] jermolene [dot] com)
 
 Copyright © Jeremy Ruston 2004-2007
 Copyright © UnaMesa Association 2007-2015
@@ -41,119 +42,124 @@ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGE.
-" />
-<link id="faviconLink" rel="shortcut icon" href="favicon.ico">
-<title>neovib — Design Document</title>
-<!--~~ This is a Tiddlywiki file. The points of interest in the file are marked with this pattern ~~--><!--~~ Raw markup ~~-->
+"/>
+    <link id="faviconLink" rel="shortcut icon" href="favicon.ico">
+    <title>neovib — Design Document</title>
+    <!--~~ This is a Tiddlywiki file. The points of interest in the file are marked with this pattern ~~-->
+    <!--~~ Raw markup ~~-->
 
 </head>
 <body class="tc-body">
 <!--~~ Static styles ~~-->
 <div id="styleArea">
-<style data-tiddler-title="$:/boot/boot.css" data-tiddler-type="text/css" type="text/css">/*
-Basic styles used before we boot up the parsing engine
-*/
+    <style data-tiddler-title="$:/boot/boot.css" data-tiddler-type="text/css" type="text/css">/*
+        Basic styles used before we boot up the parsing engine
+        */
 
-/*
-Error message and password prompt
-*/
+        /*
+        Error message and password prompt
+        */
 
-.tc-password-wrapper, .tc-error-form {
-    font-family: sans-serif;
-	z-index: 20000;
-	position: fixed;
-	text-align: center;
-	width: 200px;
-	top: 4em;
-    left: 50%;
-    margin-left: -144px; /* - width/2 - paddingHorz/2 - border */
-	padding: 16px 16px 16px 16px;
-	border-radius: 8px;
-}
+        .tc-password-wrapper, .tc-error-form {
+        font-family: sans-serif;
+        z-index: 20000;
+        position: fixed;
+        text-align: center;
+        width: 200px;
+        top: 4em;
+        left: 50%;
+        margin-left: -144px; /* - width/2 - paddingHorz/2 - border */
+        padding: 16px 16px 16px 16px;
+        border-radius: 8px;
+        }
 
-.tc-error-form {
-	color: #fff;
-	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
-	background-color: rgb(255, 75, 75);
-	border: 8px solid rgb(255, 0, 0);
-	width: 480px;
-    margin-left: -244px; /* - width/2 - paddingHorz/2 - border */
-}
+        .tc-error-form {
+        color: #fff;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+        background-color: rgb(255, 75, 75);
+        border: 8px solid rgb(255, 0, 0);
+        width: 480px;
+        margin-left: -244px; /* - width/2 - paddingHorz/2 - border */
+        }
 
-.tc-error-form div {
-	padding-bottom: 1em;
-}
+        .tc-error-form div {
+        padding-bottom: 1em;
+        }
 
-.tc-error-prompt {
-	color: #000;
-	text-shadow: none;
-}
+        .tc-error-prompt {
+        color: #000;
+        text-shadow: none;
+        }
 
-.tc-password-wrapper {
-	color: #000;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	background-color: rgb(197, 235, 183);
-	border: 8px solid rgb(164, 197, 152);
-}
+        .tc-password-wrapper {
+        color: #000;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        background-color: rgb(197, 235, 183);
+        border: 8px solid rgb(164, 197, 152);
+        }
 
-.tc-password-wrapper form {
-	text-align: left;
-}
+        .tc-password-wrapper form {
+        text-align: left;
+        }
 
-.tc-password-wrapper h1 {
-	font-size: 16px;
-	line-height: 20px;
-	padding-bottom: 16px;
-}
+        .tc-password-wrapper h1 {
+        font-size: 16px;
+        line-height: 20px;
+        padding-bottom: 16px;
+        }
 
-.tc-password-wrapper input {
-	width: 100%;
-}
-</style>
+        .tc-password-wrapper input {
+        width: 100%;
+        }
+    </style>
 </div>
 <!--~~ Static content for Google and browsers without JavaScript ~~-->
 <noscript>
-<div id="splashArea">
+    <div id="splashArea">
 
-<p>This <a class="tc-tiddlylink-external" href="http://tiddlywiki.com" target="_blank">TiddlyWiki</a> contains the following tiddlers:</p><p><ul>
+        <p>This <a class="tc-tiddlylink-external" href="http://tiddlywiki.com" target="_blank">TiddlyWiki</a> contains
+            the following tiddlers:</p>
 
-<li>$:/core</li>
+        <p>
+        <ul>
 
-<li>$:/DefaultTiddlers</li>
+            <li>$:/core</li>
 
-<li>$:/isEncrypted</li>
+            <li>$:/DefaultTiddlers</li>
 
-<li>$:/SiteSubtitle</li>
+            <li>$:/isEncrypted</li>
 
-<li>$:/SiteTitle</li>
+            <li>$:/SiteSubtitle</li>
 
-<li>$:/state/showeditpreview</li>
+            <li>$:/SiteTitle</li>
 
-<li>$:/state/tab/sidebar--1835078512</li>
+            <li>$:/state/showeditpreview</li>
 
-<li>$:/StoryList</li>
+            <li>$:/state/tab/sidebar--1835078512</li>
 
-<li>$:/temp/info-plugin</li>
+            <li>$:/StoryList</li>
 
-<li>$:/temp/NewTagName</li>
+            <li>$:/temp/info-plugin</li>
 
-<li>$:/themes/tiddlywiki/snowwhite</li>
+            <li>$:/temp/NewTagName</li>
 
-<li>$:/themes/tiddlywiki/vanilla</li>
+            <li>$:/themes/tiddlywiki/snowwhite</li>
 
-<li>Project Checkin</li>
+            <li>$:/themes/tiddlywiki/vanilla</li>
 
-</ul>
-</p>
+            <li>Project Checkin</li>
+
+        </ul>
+        </p>
 
 
-
-</div>
+    </div>
 </noscript>
 <!--~~ Ordinary tiddlers ~~-->
 
 <div id="storeArea" style="display:none;">
-<div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="TiddlyWiki5 core" list="readme" plugin-priority="0" plugin-type="plugin" title="$:/core" type="application/json" version="5.1.9">
+    <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="TiddlyWiki5 core" list="readme"
+         plugin-priority="0" plugin-type="plugin" title="$:/core" type="application/json" version="5.1.9">
 <pre>{
     &quot;tiddlers&quot;: {
         &quot;$:/Acknowledgements&quot;: {
@@ -5860,29 +5866,29 @@ Error message and password prompt
         }
     }
 }</pre>
-</div>
-<div created="20151011185240289" modified="20151011185240289" title="$:/DefaultTiddlers">
-<pre></pre>
-</div>
-<div title="$:/isEncrypted">
-<pre>no</pre>
-</div>
-<div created="20151011185234863" modified="20151011185238896" title="$:/SiteSubtitle">
-<pre>Design Document</pre>
-</div>
-<div created="20151011185231824" modified="20151011185233936" title="$:/SiteTitle">
-<pre>neovib</pre>
-</div>
-<div modified="20151102044551823" title="$:/state/showeditpreview">
-<pre>yes</pre>
-</div>
-<div modified="20151102044538998" title="$:/state/tab/sidebar--1835078512">
-<pre>$:/core/ui/SideBar/Open</pre>
-</div>
-<div list="[[Project Checkin]]" title="$:/StoryList">
-<pre></pre>
-</div>
-<div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
+    </div>
+    <div created="20151011185240289" modified="20151011185240289" title="$:/DefaultTiddlers">
+        <pre></pre>
+    </div>
+    <div title="$:/isEncrypted">
+        <pre>no</pre>
+    </div>
+    <div created="20151011185234863" modified="20151011185238896" title="$:/SiteSubtitle">
+        <pre>Design Document</pre>
+    </div>
+    <div created="20151011185231824" modified="20151011185233936" title="$:/SiteTitle">
+        <pre>neovib</pre>
+    </div>
+    <div modified="20151102044551823" title="$:/state/showeditpreview">
+        <pre>yes</pre>
+    </div>
+    <div modified="20151102044538998" title="$:/state/tab/sidebar--1835078512">
+        <pre>$:/core/ui/SideBar/Open</pre>
+    </div>
+    <div list="[[Project Checkin]]" title="$:/StoryList">
+        <pre></pre>
+    </div>
+    <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
 <pre>{
     &quot;tiddlers&quot;: {
         &quot;$:/info/browser&quot;: {
@@ -5895,11 +5901,13 @@ Error message and password prompt
         }
     }
 }</pre>
-</div>
-<div created="20151102044548296" modified="20151102044550596" title="$:/temp/NewTagName">
-<pre></pre>
-</div>
-<div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="$:/themes/tiddlywiki/vanilla" description="Emphasises individual tiddlers" name="Snow White" plugin-type="theme" title="$:/themes/tiddlywiki/snowwhite" type="application/json" version="5.1.9">
+    </div>
+    <div created="20151102044548296" modified="20151102044550596" title="$:/temp/NewTagName">
+        <pre></pre>
+    </div>
+    <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="$:/themes/tiddlywiki/vanilla"
+         description="Emphasises individual tiddlers" name="Snow White" plugin-type="theme"
+         title="$:/themes/tiddlywiki/snowwhite" type="application/json" version="5.1.9">
 <pre>{
     &quot;tiddlers&quot;: {
         &quot;$:/themes/tiddlywiki/snowwhite/base&quot;: {
@@ -5909,8 +5917,9 @@ Error message and password prompt
         }
     }
 }</pre>
-</div>
-<div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="Basic theme" name="Vanilla" plugin-type="theme" title="$:/themes/tiddlywiki/vanilla" type="application/json" version="5.1.9">
+    </div>
+    <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="Basic theme" name="Vanilla"
+         plugin-type="theme" title="$:/themes/tiddlywiki/vanilla" type="application/json" version="5.1.9">
 <pre>{
     &quot;tiddlers&quot;: {
         &quot;$:/themes/tiddlywiki/vanilla/themetweaks&quot;: {
@@ -6003,8 +6012,8 @@ Error message and password prompt
         }
     }
 }</pre>
-</div>
-<div created="20151102044540726" modified="20151102071000481" tags="milestones" title="Project Checkin">
+    </div>
+    <div created="20151102044540726" modified="20151102071000481" tags="milestones" title="Project Checkin">
 <pre>!! Stubs for Major Classes
 * The Scenes stubs in the Scene Package comprise the majority of the project. 
 
@@ -6018,14 +6027,15 @@ Error message and password prompt
 * LinkedLists (Event Queue / misc)
 * ArrayList (Beat Detection / misc)
 * Queue (Event Queue)</pre>
-</div>
+    </div>
 
 </div>
 
 
 <!--~~ Library modules ~~-->
 <div id="libraryModules" style="display:none;">
-<script data-tiddler-library="yes" data-tiddler-title="$:/library/sjcl.js" data-tiddler-type="application/javascript" type="text/javascript">"use strict";var sjcl={cipher:{},hash:{},keyexchange:{},mode:{},misc:{},codec:{},exception:{corrupt:function(a){this.toString=function(){return"CORRUPT: "+this.message};this.message=a},invalid:function(a){this.toString=function(){return"INVALID: "+this.message};this.message=a},bug:function(a){this.toString=function(){return"BUG: "+this.message};this.message=a},notReady:function(a){this.toString=function(){return"NOT READY: "+this.message};this.message=a}}};
+    <script data-tiddler-library="yes" data-tiddler-title="$:/library/sjcl.js"
+            data-tiddler-type="application/javascript" type="text/javascript">"use strict";var sjcl={cipher:{},hash:{},keyexchange:{},mode:{},misc:{},codec:{},exception:{corrupt:function(a){this.toString=function(){return"CORRUPT: "+this.message};this.message=a},invalid:function(a){this.toString=function(){return"INVALID: "+this.message};this.message=a},bug:function(a){this.toString=function(){return"BUG: "+this.message};this.message=a},notReady:function(a){this.toString=function(){return"NOT READY: "+this.message};this.message=a}}};
 if(typeof module!="undefined"&&module.exports)module.exports=sjcl;
 sjcl.cipher.aes=function(a){this.h[0][0][0]||this.z();var b,c,d,e,f=this.h[0][4],g=this.h[1];b=a.length;var h=1;if(b!==4&&b!==6&&b!==8)throw new sjcl.exception.invalid("invalid aes key size");this.a=[d=a.slice(0),e=[]];for(a=b;a<4*b+28;a++){c=d[a-1];if(a%b===0||b===8&&a%b===4){c=f[c>>>24]<<24^f[c>>16&255]<<16^f[c>>8&255]<<8^f[c&255];if(a%b===0){c=c<<8^c>>>24^h<<24;h=h<<1^(h>>7)*283}}d[a]=d[a-b]^c}for(b=0;a;b++,a--){c=d[b&3?a:a-4];e[b]=a<=4||b<4?c:g[0][f[c>>>24]]^g[1][f[c>>16&255]]^g[2][f[c>>8&255]]^
 g[3][f[c&255]]}};
@@ -6066,11 +6076,13 @@ c,true);var f;c=b.adata;if(typeof b.salt==="string")b.salt=sjcl.codec.base64.toB
 "string")c=sjcl.codec.utf8String.toBits(c);f=new sjcl.cipher[b.cipher](a);c=sjcl.mode[b.mode].decrypt(f,b.ct,b.iv,c,b.ts);e.c(d,b);d.key=a;return sjcl.codec.utf8String.fromBits(c)},encode:function(a){var b,c="{",d="";for(b in a)if(a.hasOwnProperty(b)){if(!b.match(/^[a-z0-9]+$/i))throw new sjcl.exception.invalid("json encode: invalid property name");c+=d+'"'+b+'":';d=",";switch(typeof a[b]){case "number":case "boolean":c+=a[b];break;case "string":c+='"'+escape(a[b])+'"';break;case "object":c+='"'+
 sjcl.codec.base64.fromBits(a[b],1)+'"';break;default:throw new sjcl.exception.bug("json encode: unsupported type");}}return c+"}"},decode:function(a){a=a.replace(/\s/g,"");if(!a.match(/^\{.*\}$/))throw new sjcl.exception.invalid("json decode: this isn't json!");a=a.replace(/^\{|\}$/g,"").split(/,/);var b={},c,d;for(c=0;c<a.length;c++){if(!(d=a[c].match(/^(?:(["']?)([a-z][a-z0-9]*)\1):(?:(\d+)|"([a-z0-9+\/%*_.@=\-]*)")$/i)))throw new sjcl.exception.invalid("json decode: this isn't json!");b[d[2]]=
 d[3]?parseInt(d[3],10):d[2].match(/^(ct|salt|iv)$/)?sjcl.codec.base64.toBits(d[4]):unescape(d[4])}return b},c:function(a,b,c){if(a===undefined)a={};if(b===undefined)return a;var d;for(d in b)if(b.hasOwnProperty(d)){if(c&&a[d]!==undefined&&a[d]!==b[d])throw new sjcl.exception.invalid("required parameter overridden");a[d]=b[d]}return a},W:function(a,b){var c={},d;for(d in a)if(a.hasOwnProperty(d)&&a[d]!==b[d])c[d]=a[d];return c},V:function(a,b){var c={},d;for(d=0;d<b.length;d++)if(a[b[d]]!==undefined)c[b[d]]=
-a[b[d]];return c}};sjcl.encrypt=sjcl.json.encrypt;sjcl.decrypt=sjcl.json.decrypt;sjcl.misc.S={};sjcl.misc.cachedPbkdf2=function(a,b){var c=sjcl.misc.S,d;b=b||{};d=b.iter||1E3;c=c[a]=c[a]||{};d=c[d]=c[d]||{firstSalt:b.salt&&b.salt.length?b.salt.slice(0):sjcl.random.randomWords(2,0)};c=b.salt===undefined?d.firstSalt:b.salt;d[c]=d[c]||sjcl.misc.pbkdf2(a,c,b.iter);return{key:d[c].slice(0),salt:c.slice(0)}};</script>
+a[b[d]];return c}};sjcl.encrypt=sjcl.json.encrypt;sjcl.decrypt=sjcl.json.decrypt;sjcl.misc.S={};sjcl.misc.cachedPbkdf2=function(a,b){var c=sjcl.misc.S,d;b=b||{};d=b.iter||1E3;c=c[a]=c[a]||{};d=c[d]=c[d]||{firstSalt:b.salt&&b.salt.length?b.salt.slice(0):sjcl.random.randomWords(2,0)};c=b.salt===undefined?d.firstSalt:b.salt;d[c]=d[c]||sjcl.misc.pbkdf2(a,c,b.iter);return{key:d[c].slice(0),salt:c.slice(0)}};
+    </script>
 </div>
 <!--~~ Boot kernel prologue ~~-->
 <div id="bootKernelPrefix" style="display:none;">
-<script data-tiddler-title="$:/boot/bootprefix.js" data-tiddler-type="application/javascript" type="text/javascript">/*\
+    <script data-tiddler-title="$:/boot/bootprefix.js" data-tiddler-type="application/javascript"
+            type="text/javascript">/*\
 title: $:/boot/bootprefix.js
 type: application/javascript
 
@@ -6182,11 +6194,12 @@ if(typeof(exports) === "undefined") {
 	// Export functionality as a module
 	exports.bootprefix = _bootprefix;
 }
-</script>
+
+    </script>
 </div>
 <!--~~ Boot kernel ~~-->
 <div id="bootKernel" style="display:none;">
-<script data-tiddler-title="$:/boot/boot.js" data-tiddler-type="application/javascript" type="text/javascript">/*\
+    <script data-tiddler-title="$:/boot/boot.js" data-tiddler-type="application/javascript" type="text/javascript">/*\
 title: $:/boot/boot.js
 type: application/javascript
 
@@ -8209,7 +8222,8 @@ if(typeof(exports) !== "undefined") {
 } else {
 	_boot(window.$tw);
 }
-</script>
+
+    </script>
 </div>
 </body>
 </html>
