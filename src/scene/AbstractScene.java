@@ -1,6 +1,6 @@
 package src.scene;
 
-import src.event.*;
+import src.event.VibEvent;
 
 public abstract class AbstractScene {
 
