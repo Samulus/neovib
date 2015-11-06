@@ -14,7 +14,7 @@ public class EQ {
    public static VibEvent dequeue() {
       return queue.poll();
    }
-   
+
    public static VibEvent peek() {
       return queue.peek();
    }
