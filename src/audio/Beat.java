@@ -1,37 +1,28 @@
 package src.audio;
-import java.util.ArrayList;
+
+import java.util.LinkedList;
 
 public class Beat {
 
-  private float dst = 0.0f;
-  private ArrayList<Float> beats = null;
-  private int currBeat = 0;
+   private float dst = 0.0f;
+   private LinkedList<Float> beats = null;
+   private int currBeat = 0;
 
-  public Beat(ArrayList<Float> beats) {
-    this.beats = beats;
-  }
+   public Beat(LinkedList<Float> beats) {
+      this.beats = beats;
+   }
 
-  public boolean detect(float pos) {
-    pos /= 1000.0f;
-    if (currBeat >= this.beats.size())
-       return false;
-    float beatTime = this.beats.get(currBeat);
-    this.dst = Math.abs(pos - beatTime);
+   public float peek() {
+      return this.beats.get(currBeat);
+   }
 
-    /* Beat Detected */
-    if (dst < 0.9) {
-      System.out.println(beatTime);
-      currBeat++; 
-      return true;
-    } 
+   public float time() {
+      if (currBeat == 0) return beats.get(currBeat);
+      return beats.get(currBeat) - beats.get(currBeat - 1);
+   }
 
-    /* Missed Beat */
-    if (pos > beatTime) {
-      System.out.println("Missing " + beatTime);
-      currBeat++; 
-      return false;
-    }
+   public LinkedList<Float> getList() {
+      return this.beats;
+   }
 
-    return false;
-  }
 }
