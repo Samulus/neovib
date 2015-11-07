@@ -34,7 +34,7 @@ public class Detector {
          return null;
       }
 
-      System.out.println(f.getName());
+      //System.out.println(f.getName());
 
       /* copied and adapted slightly from http://www.badlogicgames.com/wordpress/?cat=18 */
       /* thanks badlogic games */
