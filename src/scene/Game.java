@@ -1,5 +1,5 @@
 package src.scene;
-
+;
 import processing.core.PApplet;
 import src.audio.Audio;
 import src.audio.Beat;
@@ -45,23 +45,22 @@ public class Game extends AbstractScene {
          s.render();
       }
 
-      //p.render();
+      p.render();
       track.render();
    }
 
    public void logic() {
 
       // TODO: remove old elements
-      //audio.getPosition(); // each frame
       konducta.nextReady();
 
         /* vibrate, stop pulsating*/
       for (AbstractShape s : konducta.getList()) {
-         if (s.getDistance() <= Scene.p.width / 7f) s.setVibrate(60);
+         if (s.getDistance() <= Scene.p.width / 7f + 64) s.setVibrate(60);
          s.advance();
       }
 
-      track.setVibrate(PApplet.constrain(track.getVibrate() * 0.95f, 0, 32));
+      track.setVibrate(20);
 
    }
 

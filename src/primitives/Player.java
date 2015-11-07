@@ -10,11 +10,8 @@ public class Player {
 
    public void render() {
       Scene.p.pushMatrix();
-      Scene.p.translate(Scene.p.width / 16f, Scene.p.height / 2.2f);
-      Scene.p.ellipseMode(PConstants.CORNER);
-      Scene.p.ellipse(0, 0, 60, 60);
-      Scene.p.triangle(-20, 0, 0, -20, 20, 0);
-      Scene.p.triangle(-20, 0, 0, 20, 20, 0);
+      Scene.p.translate(Scene.p.width / 7f, Scene.p.height / 2.2f);
+      Scene.p.line(0,0, 0, 64);
       Scene.p.popMatrix();
 
    }
