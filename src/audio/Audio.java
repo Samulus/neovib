@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class Audio {
 
-   //Minim minim;
    AudioPlayer song;
    File f;
    float[] beats;
@@ -20,13 +19,11 @@ public class Audio {
    private int lastReport;
    private int songPos;
    private AudioDispatcher dispatch;
-   private AudioPlayer ap = null;
+   private AudioPlayer ap;
+   private TarsosDSPAudioFormat fmt;
 
    public Audio(String fpath, int sampleRate) {
-      //this.minim = new Minim(Scene.p);
-      this.f = new File(fpath); // TODO: CHECK IF VALID SONG FILE
-      //this.song = minim.loadFile(fpath, sampleRate);
-      TarsosDSPAudioFormat fmt = null;
+      this.f = new File(fpath);
 
       /* Load Song w/ FFMPEG */
       try {
@@ -34,10 +31,9 @@ public class Audio {
          fmt = dispatch.getFormat();
       } catch (IOException e) {
          e.printStackTrace();
-
       }
 
-      /* create audio player */
+      /* Create Audio Player */
       try {
          ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt));
          dispatch.addAudioProcessor(ap);
@@ -65,6 +61,8 @@ public class Audio {
          lastReport = minimPos;
          System.out.println("Desync");
       }
+
+      System.out.println(songPos);
 
       return songPos;
    }
