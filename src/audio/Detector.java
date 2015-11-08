@@ -1,26 +1,17 @@
 package src.audio;
 
-import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.AudioEvent;
-import be.tarsos.dsp.AudioProcessor;
-import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
-import be.tarsos.dsp.util.fft.FFT;
-import be.tarsos.dsp.util.fft.HammingWindow;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-//import be.tarsos.dsp.filters.LowPassSP;
-//import be.tarsos.dsp.filters.*;
-//import be.tarsos.dsp.io.TarsosDSPAudioFormat;
-//import be.tarsos.dsp.io.jvm.AudioPlayer;
-//import be.tarsos.dsp.io.PipedAudioStream;
+import be.tarsos.dsp.*;
+import be.tarsos.dsp.io.jvm.*;
+import be.tarsos.dsp.util.fft.*;
+import be.tarsos.dsp.util.fft.*;
+import java.io.*;
+import java.util.*;
 
 public class Detector {
 
-   static final int CUTOFF = 20; // 20
-   static final float MEAN = 1.5f; // 1.45f;
-   static final float DST = 0.3f; // 0.1
+   static final int CUTOFF  = 20;   // 20
+   static final float MEAN  = 1.5f; // 1.45f;
+   static final float DST   = 0.3f;  // 0.1
 
    public static LinkedList<Float> load(File f) {
 
@@ -34,20 +25,23 @@ public class Detector {
          return null;
       }
 
-      //System.out.println(f.getName());
-
       /* copied and adapted slightly from http://www.badlogicgames.com/wordpress/?cat=18 */
       /* thanks badlogic games */
 
-      final LinkedList<Float> output = new LinkedList<Float>();
-      final HammingWindow h = new HammingWindow();
       /*
-       * Beat Detection
-       * 
+         Onset Note Detection Pulled from BadLogicsGames awesome article
+         http://www.badlogicgames.com/wordpress/?cat=18
+         Adapted to to use TarsosDSP, HammingWindows,
        */
 
-      AudioProcessor beats = new AudioProcessor() {
+      final LinkedList<Float> output = new LinkedList<Float>();
+      final HammingWindow ham = new HammingWindow();
 
+      /*
+       * Beat Detection
+       */
+
+      AudioProcessor detectProcessor = new AudioProcessor() {
 
          float[] spectrum = new float[1024 / 2 + 1];
          float[] lastSpectrum = new float[1024 / 2 + 1];
@@ -55,13 +49,11 @@ public class Detector {
          ArrayList<Float> threshould = new ArrayList<Float>();
          ArrayList<Float> pruned = new ArrayList<Float>();
          ArrayList<Float> peaks = new ArrayList<Float>();
-         //ArrayList<Float> output = new ArrayList<Float>();
-
 
          @Override
          public boolean process(AudioEvent audioEvent) {
             float[] buff = audioEvent.getFloatBuffer();
-            h.apply(buff);
+            ham.apply(buff);
             fft.forwardTransform(buff);
 
             /* update float buffers */
@@ -97,7 +89,7 @@ public class Detector {
                threshould.add(mean * MEAN);
             }
 
-            /* disregard beats thatare not equal to or above the threshold */
+            /* disregard beats that are not equal to or above the threshold */
             for (int i = 0; i < threshould.size(); ++i) {
 
                float value = (threshould.get(i) <= spectralFlux.get(i)) ? spectralFlux.get(i) - threshould.get(i) : 0;
@@ -139,11 +131,7 @@ public class Detector {
          }
       };
 
-      //dispatcher.addAudioProcessor(new HighPass(200.f, 1024));
-      //dispatcher.addAudioProcessor(new LowPassFS(100.0f, 1024));
-      // dispatcher.addAudioProcessor(new HighPass(500.0f, 1024));
-
-      dispatcher.addAudioProcessor(beats);
+      dispatcher.addAudioProcessor(detectProcessor);
       dispatcher.run();
       return output;
 
