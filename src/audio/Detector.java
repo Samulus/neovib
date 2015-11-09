@@ -3,17 +3,16 @@ package src.audio;
 import be.tarsos.dsp.*;
 import be.tarsos.dsp.io.jvm.*;
 import be.tarsos.dsp.util.fft.*;
-import be.tarsos.dsp.util.fft.*;
 import java.io.*;
 import java.util.*;
 
 public class Detector {
 
    static final int CUTOFF  = 20;   // 20
-   static final float MEAN  = 1.5f; // 1.45f;
-   static final float DST   = 0.3f;  // 0.1
+   static final double MEAN = 1.5f; // 1.45f;
+   static final double DST = 0.3f;  // 0.1
 
-   public static LinkedList<Float> load(File f) {
+   public static LinkedList<Double> load(File f) {
 
       AudioDispatcher dispatcher = null;
       final FFT fft = new FFT(1024);
@@ -25,16 +24,16 @@ public class Detector {
          return null;
       }
 
-      /* copied and adapted slightly from http://www.badlogicgames.com/wordpress/?cat=18 */
-      /* thanks badlogic games */
-
       /*
-         Onset Note Detection Pulled from BadLogicsGames awesome article
+         Onset Note Detection Pulled from BadLogicsGames awesome article:
          http://www.badlogicgames.com/wordpress/?cat=18
-         Adapted to to use TarsosDSP, HammingWindows,
+         It's mostly unchanged but adapted to use TarsosDSP, a HammingWindow,
+         and ignores beats that are within 0.3ms of each other.
+
+         Thanks BadLogicGames!
        */
 
-      final LinkedList<Float> output = new LinkedList<Float>();
+      final LinkedList<Double> output = new LinkedList<Double>();
       final HammingWindow ham = new HammingWindow();
 
       /*
@@ -43,12 +42,12 @@ public class Detector {
 
       AudioProcessor detectProcessor = new AudioProcessor() {
 
-         float[] spectrum = new float[1024 / 2 + 1];
-         float[] lastSpectrum = new float[1024 / 2 + 1];
-         ArrayList<Float> spectralFlux = new ArrayList<Float>();
-         ArrayList<Float> threshould = new ArrayList<Float>();
-         ArrayList<Float> pruned = new ArrayList<Float>();
-         ArrayList<Float> peaks = new ArrayList<Float>();
+         double[] spectrum = new double[1024 / 2 + 1];
+         double[] lastSpectrum = new double[1024 / 2 + 1];
+         ArrayList<Double> spectralFlux = new ArrayList<Double>();
+         ArrayList<Double> threshould = new ArrayList<Double>();
+         ArrayList<Double> pruned = new ArrayList<Double>();
+         ArrayList<Double> peaks = new ArrayList<Double>();
 
          @Override
          public boolean process(AudioEvent audioEvent) {
@@ -56,14 +55,19 @@ public class Detector {
             ham.apply(buff);
             fft.forwardTransform(buff);
 
-            /* update float buffers */
             System.arraycopy(spectrum, 0, lastSpectrum, 0, spectrum.length);
-            System.arraycopy(buff, 0, spectrum, 0, spectrum.length);
+
+            /* doubletime */
+            for (int i = 0; i < spectrum.length; ++i) {
+               spectrum[i] = (double) buff[i];
+            }
+
+            //System.arraycopy(buff, 0, spectrum, 0, spectrum.length);
 
             /* calculate spectrual flux (distance variance between each height) */
-            float flux = 0;
+            double flux = 0;
             for (int i = 0; i < spectrum.length; ++i) {
-               float value = (spectrum[i] - lastSpectrum[i]);
+               double value = (spectrum[i] - lastSpectrum[i]);
                flux += value < 0 ? 0 : value; // ignore negatives
             }
 
@@ -82,7 +86,7 @@ public class Detector {
                int start = Math.max(0, i - CUTOFF);
                int end = Math.min(spectralFlux.size() - 1, i + CUTOFF);
 
-               float mean = 0;
+               double mean = 0;
                for (int j = start; j <= end; ++j)
                   mean += spectralFlux.get(j);
                mean /= (end - start);
@@ -92,30 +96,26 @@ public class Detector {
             /* disregard beats that are not equal to or above the threshold */
             for (int i = 0; i < threshould.size(); ++i) {
 
-               float value = (threshould.get(i) <= spectralFlux.get(i)) ? spectralFlux.get(i) - threshould.get(i) : 0;
+               double value = (threshould.get(i) <= spectralFlux.get(i)) ? spectralFlux.get(i) - threshould.get(i) : 0;
                pruned.add(value);
 
             }
 
             /* finally capture the peaks in the audio */
             for (int i = 0; i < pruned.size() - 1; ++i) {
-               float value = (pruned.get(i) > pruned.get(i + 1)) ? pruned.get(i) : 0;
+               double value = (pruned.get(i) > pruned.get(i + 1)) ? pruned.get(i) : 0;
                peaks.add(value);
             }
 
             int count = 0;
-            float avg = 0.0f;
-            //avg = 0.0f;
-            //System.out.println(avg); // shut up eclipse
+            double avg = 0.0f;
+            double prev = 0.0f;
 
-            float prev = 0.0f;
-
-            float time = 1024.0f / 44100.0f;
+            double time = 1024.0f / 44100.0f;
             for (int i = 0; i < peaks.size(); ++i) {
-               float p = peaks.get(i);
+               double p = peaks.get(i);
                if (p > 0) {
-                  if (Math.abs((i * time) - prev) >= DST) { // if there is at least 0.4 seconds between
-                     System.out.println(i * time);
+                  if (Math.abs((i * time) - prev) >= DST) { // if there is at least DST seconds betof each other.                     //System.out.println(i * time);
                      output.add(i * time);
                      count++;
                   }
@@ -125,8 +125,8 @@ public class Detector {
 
             }
 
-            System.out.println("---");
-            System.out.println(count);
+            //System.out.println("---");
+            //System.out.println(count);
 
          }
       };
