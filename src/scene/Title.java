@@ -5,13 +5,25 @@ import src.event.EQ;
 import src.event.VibEvent;
 import src.ui.Menu;
 
+import java.util.ArrayList;
+
 public class Title extends AbstractScene {
 
-   private String[] options = {"Browse", "Video Lag", "Audio Lag", "Gamepad", "Debug"};
+   private ArrayList<String> options;
    private Menu menu;
 
-   public void setup() {
+   /* once per program life */
+   public Title() {
+      options = new ArrayList<String>();
+      options.add("Browse");
+      options.add("Video Lag");
+      options.add("Audio Lag");
+      options.add("Gamepad");
       menu = new Menu(options, "noscroll");
+   }
+
+   /* every time the scene is reentered */
+   public void setup() {
       Scene.p.noFill();
       Scene.p.stroke(255);
       Scene.p.textAlign(PConstants.RIGHT);
@@ -31,10 +43,8 @@ public class Title extends AbstractScene {
        /* switch state */
       if (event == VibEvent.INPUT_ACCEPT) {
          // I'll change this to EQ.enqueue(VibEvent.lookup(options[menu.getIndex()]) later
-         if (options[menu.getIndex()].equals("Debug")) EQ.enqueue(VibEvent.SCENE_DEBUG);
-         if (options[menu.getIndex()].equals("Browse")) EQ.enqueue(VibEvent.SCENE_BROWSER);
-
-         //Scene.focus("Debug");
+         if (options.get(menu.getIndex()).equals("Browse")) EQ.enqueue(VibEvent.SCENE_BROWSER);
+         if (options.get(menu.getIndex()).equals("Video Lag")) EQ.enqueue(VibEvent.SCENE_VIDEO_LAG);
       }
 
    }

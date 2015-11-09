@@ -4,20 +4,23 @@ import processing.core.PConstants;
 import src.event.VibEvent;
 import src.scene.Scene;
 
+import java.util.ArrayList;
+
 public class Menu {
 
-   private String[] values = null;
+   private ArrayList<String> values;
    private int selected = 0;
    private int offset = 0;
    private boolean needScroll = false;
    private boolean noScroll = false;
 
-   public Menu(String[] values) {
-      this.values = values;
+   public Menu(ArrayList<String> values) {
+      this.values = (values == null) ? new ArrayList<String>() : values;
+      this.values.add(0, "..");
    }
 
-   public Menu(String[] values, String mode) {
-      this.values = values;
+   public Menu(ArrayList<String> values, String mode) {
+      this.values = (values == null) ? new ArrayList<String>() : values;
       noScroll = mode.equals("noscroll");
    }
 
@@ -27,10 +30,10 @@ public class Menu {
       Scene.p.textAlign(PConstants.LEFT);
       Scene.p.translate(x, y);
 
-        /* Invalid Directory / Error Entering Directory */
+      /* Invalid Directory / Error Entering Directory */
       if (this.values == null) {
-         values = new String[1];
-         values[0] = "(no valid files detected)";
+         //values = new ArrayList<String>();
+         //values.add(";(");
          Scene.p.popMatrix();
          return;
       }
@@ -39,9 +42,9 @@ public class Menu {
       int vibrate = 0;
 
       offset = (noScroll) ? 0 : selected;
-      for (int i = offset; i < values.length; ++i) {
+      for (int i = offset; i < values.size(); ++i) {
          vibrate = (i == selected) ? 5 : 0;
-         Scene.p.text(values[i], 0, dst + Scene.p.random(vibrate));
+         Scene.p.text(values.get(i), 0, dst + Scene.p.random(vibrate));
          dst += 32;
 
          this.needScroll = (dst >= Scene.p.height - 64);
@@ -58,7 +61,7 @@ public class Menu {
       assert event.isNavigate();
 
       if (event == VibEvent.INPUT_DOWN) {
-         selected += (selected < values.length - 1) ? 1 : 0;
+         selected += (selected < values.size() - 1) ? 1 : 0;
       } else if (event == VibEvent.INPUT_UP) {
          selected -= (selected > 0) ? 1 : 0;
       }
@@ -74,9 +77,8 @@ public class Menu {
       offset = 0;
    }
 
-   public void refresh(String[] values) {
+   public void refresh(ArrayList<String> values) {
       this.values = values;
    }
-
 
 }

@@ -1,6 +1,7 @@
 package src.primitives;
 
 import processing.core.PConstants;
+import src.constants.VibConstant;
 import src.scene.Scene;
 
 public class Circle extends AbstractShape {

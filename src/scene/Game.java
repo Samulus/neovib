@@ -1,30 +1,34 @@
 package src.scene;
 ;
-import processing.core.PApplet;
-import src.audio.Audio;
-import src.audio.Beat;
-import src.audio.BeatKonducta;
-import src.audio.Detector;
-import src.event.VibEvent;
-import src.primitives.AbstractShape;
-import src.primitives.Line;
-import src.primitives.Player;
+import src.audio.*;
+import src.event.*;
+import src.primitives.*;
+import src.debug.BeatOverlay;
 
 import java.io.File;
+import java.util.LinkedList;
 
 public class Game extends AbstractScene {
 
-   String fpath;
-   Player p = new Player();
-   Line track = new Line();
+   /* Graphics */
+   Player player = new Player();
+   Track track = new Track();
+
+   /* Audio */
    private Audio audio;
    private Beat beat;
    private BeatKonducta konducta;
 
-   public void setup() {
-      Scene.p.noFill();
-      Scene.p.stroke(255);
+   public Game() {
+      player = new Player();
+      track = new Track();
+   }
 
+   public void setup() {
+
+      String fpath = "";
+
+      /* Load Browser Song */
       try {
          fpath = Browser.fsong.getCanonicalPath();
       } catch (Exception e) {
@@ -33,7 +37,15 @@ public class Game extends AbstractScene {
       }
 
       audio = new Audio(fpath, 1024);
-      beat = new Beat(Detector.load(new File(fpath)));
+      LinkedList<Double> beats = Detector.load(new File(fpath));
+
+      // avoid songs with no / few beats */
+      if (beats.size() < 5) {
+         EQ.enqueue(VibEvent.SCENE_BROWSER);
+         return;
+      }
+
+      beat = new Beat(beats);
       konducta = new BeatKonducta(audio, beat);
       audio.play();
    }
@@ -41,29 +53,29 @@ public class Game extends AbstractScene {
    public void render() {
       Scene.p.background(0);
 
+      /* Onscreen Elements */
+      player.render();
+      track.render();
+
+      /* Render Obstacles */
       for (AbstractShape s : konducta.getList()) {
+         if (s.getDistance() <= Scene.p.width / 7) {
+            s.setVibrate(40);
+         }
          s.render();
       }
-
-      p.render();
-      track.render();
    }
 
    public void logic() {
-
-      // TODO: remove old elements
       konducta.nextReady();
-
-        /* vibrate, stop pulsating*/
+      konducta.deleteOld();
       for (AbstractShape s : konducta.getList()) {
-         if (s.getDistance() <= Scene.p.width / 7f + 64) s.setVibrate(60);
+         player.logic(s.getDistance());
          s.advance();
       }
-
-      track.setVibrate(20);
-
    }
 
    public void input(VibEvent event) {
+      player.input(event);
    }
 }

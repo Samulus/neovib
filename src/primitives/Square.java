@@ -15,7 +15,9 @@ public class Square extends AbstractShape {
       Scene.p.line(0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
       Scene.p.line(0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate));
       Scene.p.line(60 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
+      Scene.p.stroke(0);
       Scene.p.line(0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
+      Scene.p.stroke(255);
       Scene.p.popMatrix();
    }
 

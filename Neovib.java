@@ -19,7 +19,7 @@ public class Neovib extends PApplet {
    public void setup() {
       Scene.setContext(this); // always call first
       Scene.initScenes();
-      Scene.focus(VibEvent.SCENE_BROWSER);
+      Scene.focus(VibEvent.SCENE_TITLE);
       Scene.p.frameRate(60);
    }
 
@@ -29,15 +29,16 @@ public class Neovib extends PApplet {
       while (true) {
 
          VibEvent event = EQ.dequeue();
-
          if (event == null) break;
 
          else if (event == VibEvent.ERROR_CODE) {
-            System.out.println("error detected audi5k");
+            System.out.println("error detected audi5k we bounce now");
             System.exit(-1);
          } else if (event.isScene()) {
             Scene.focus(event);
-         } else if (event.isNavigate() || event.isTraversal()) {
+         } else if (event.isNavigate() ||
+                 event.isTraversal() ||
+                 event.isPlayer()) {
             Scene.input(event);
          }
       }

@@ -3,29 +3,34 @@ package src.scene;
 import src.event.EQ;
 import src.event.VibEvent;
 import src.ui.Menu;
+import src.util.Util;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class Browser extends AbstractScene {
 
    public static File fsong;
    private Menu menu;
-   private File buffer;
-   private String[] list;
-   private File[] flist;
+   private File buffer; // current location in filesystem
+   private ArrayList<String> list; // all filenames in directory
+   private File[] flist; // all file objects in directory
+
+   public Browser() {
+      menu = new Menu(null);
+   }
 
    public void setup() {
       Scene.p.textSize(32);
-      menu = new Menu(list);
       rebuild(".");
    }
 
    public void rebuild(String path) {
       buffer = new File(path);
       flist = buffer.listFiles();
-      list = buffer.list();
-      menu.reset();
+      list = Util.toArrayList(buffer.list());
       menu.refresh(list);
+      menu.reset();
    }
 
    public void render() {
@@ -44,10 +49,11 @@ public class Browser extends AbstractScene {
       }
 
       File tmp = null;
+
       try {
          tmp = new File(flist[menu.getIndex()].getCanonicalPath());
       } catch (Exception e) {
-         System.out.println("non existent index");
+         /* attempt to access non existent entry blocked */
       }
       
       /* switch state */
