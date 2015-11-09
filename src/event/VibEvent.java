@@ -11,7 +11,6 @@ public enum VibEvent {
    SCENE_BROWSER(3, "Browser"),
    SCENE_AUDIO_LAG(4, "Audio Lag"),
    SCENE_VIDEO_LAG(5, "Video Lag"),
-   SCENE_DEBUG(6, "Debug"),
 
    /* Navigation (100-199) */
    INPUT_UP(100),
@@ -21,7 +20,19 @@ public enum VibEvent {
 
    /* Traversal (200-299) */
    INPUT_ACCEPT(200),
-   INPUT_PREVIOUS(201);
+   INPUT_PREVIOUS(201),
+
+   /* Camera (300 - 399) */
+   /*
+   CAMERA_PAN_FORWARD(300),
+   CAMERA_PAN_BACKWARD(301),
+   CAMERA_PAN_LEFT(302),
+   CAMERA_PAN_RIGHT(303),
+   CAMERA_UP()
+   */
+
+   /* Game Actions (400 - 499)*/
+   PLAYER_DODGE(400);
 
    private final int code;
    private String str = "";
@@ -46,6 +57,10 @@ public enum VibEvent {
 
    public boolean isTraversal() {
       return (this.code >= 200 && this.code <= 299);
+   }
+
+   public boolean isPlayer() {
+      return (this.code >= 400 && this.code <= 499);
    }
 
    public int getCode() {
