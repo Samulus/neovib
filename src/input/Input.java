@@ -16,7 +16,10 @@ public class Input {
 
       if (Scene.p.keyPressed && !keyHeld) {
          keyHeld = true;
+
          switch (pressed) {
+
+            /* Movement */
             case 'k':
             case PConstants.UP:
                EQ.enqueue(VibEvent.INPUT_UP);
@@ -40,7 +43,15 @@ public class Input {
             case PConstants.BACKSPACE:
                EQ.enqueue(VibEvent.INPUT_PREVIOUS);
                break;
+
+            /* Player */
+            case ' ':
+               EQ.enqueue(VibEvent.PLAYER_DODGE);
+               break;
+            //case 'h'
+
          }
+
       }
 
    }
