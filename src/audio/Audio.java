@@ -1,11 +1,8 @@
 package src.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.AudioProcessor;
 import be.tarsos.dsp.io.*;
 import be.tarsos.dsp.io.jvm.*;
-import src.scene.Scene;
-
 import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +12,9 @@ public class Audio {
    AudioPlayer song;
    File f;
    float[] beats;
-   private int previousFrame;
-   private int lastReport;
-   private int songPos;
+   private double previousFrame;
+   private double lastReport;
+   private double songPos;
    private AudioDispatcher dispatch;
    private AudioPlayer ap;
    private TarsosDSPAudioFormat fmt;
@@ -43,26 +40,23 @@ public class Audio {
    }
 
    public void play() {
-      previousFrame = (int) (System.nanoTime() / 1000000);
+      previousFrame = System.nanoTime() / 1000000.0;
       lastReport = 0;
       songPos = 0;
       new Thread(dispatch).start();
    }
 
-   // call every frame!
-   public int getPosition() {
-      int ptime = (int) (System.nanoTime() / 1000000);
+   // call each frame
+   public double getPosition() {
+      double ptime = System.nanoTime() / 1000000;
       songPos += ptime - previousFrame;
       previousFrame = ptime;
 
-      int minimPos = (int) dispatch.secondsProcessed() * 1000;
-      if (minimPos != lastReport) {
+      double minimPos = dispatch.secondsProcessed() * 1000;
+      if (Math.abs(minimPos - lastReport) >= 0.1) {
          songPos = (songPos + minimPos) / 2;  // easing
          lastReport = minimPos;
-         System.out.println("Desync");
       }
-
-      System.out.println(songPos);
 
       return songPos;
    }
