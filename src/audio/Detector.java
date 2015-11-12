@@ -9,7 +9,7 @@ import java.util.*;
 public class Detector {
 
    static final int CUTOFF  = 20;   // 20
-   static final double MEAN = 1.5f; // 1.45f;
+   static final double MEAN = 1.3f; // 1.45f;
    static final double DST = 0.3f;  // 0.1
 
    public static LinkedList<Double> load(File f) {
@@ -18,7 +18,7 @@ public class Detector {
       final FFT fft = new FFT(1024);
 
       try {
-         dispatcher = AudioDispatcherFactory.fromPipe(f.getCanonicalPath(), 44100, 1024, 3);
+         dispatcher = AudioDispatcherFactory.fromPipe(f.getCanonicalPath(), 44100, 1024, 0);
       } catch (Exception e) {
          System.out.printf("%s decoding error\n", f.getName());
          return null;
