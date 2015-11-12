@@ -32,8 +32,8 @@ public class Player {
    }
 
    public void logic(double dst) {
-      System.out.println(dst);
-      if (delay != null && delay.elapsedTime() > 32) {
+      //System.out.println(dst);
+      if (delay != null && delay.elapsedTime() > 64) {
          jumping = false;
          delay = null;
       }

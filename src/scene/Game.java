@@ -16,7 +16,6 @@ public class Game extends AbstractScene {
 
    /* Audio */
    private Audio audio;
-   private Beat beat;
    private BeatKonducta konducta;
 
    public Game() {
@@ -45,8 +44,7 @@ public class Game extends AbstractScene {
          return;
       }
 
-      beat = new Beat(beats);
-      konducta = new BeatKonducta(audio, beat);
+      konducta = new BeatKonducta(audio, beats);
       audio.play();
    }
 
