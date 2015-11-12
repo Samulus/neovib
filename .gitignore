@@ -21,6 +21,7 @@ bin/
 .idea/
 Makefile
 neovib.iml
+audio/
 
 # avoid leaking API key
 src/musicdb/Secret.java
