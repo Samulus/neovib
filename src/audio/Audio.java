@@ -16,6 +16,7 @@ public class Audio {
    private double lastReport;
    private double songPos;
    private AudioDispatcher dispatch;
+   private PipedAudioStream pipe;
    private AudioPlayer ap;
    private TarsosDSPAudioFormat fmt;
 
@@ -24,7 +25,7 @@ public class Audio {
 
       /* Load Song w/ FFMPEG */
       try {
-         dispatch = AudioDispatcherFactory.fromPipe(f.getCanonicalPath(), 44100, 1024, 3);
+         dispatch = AudioDispatcherFactory.fromPipe(f.getCanonicalPath(), 44100, 1024, 0);
          fmt = dispatch.getFormat();
       } catch (IOException e) {
          e.printStackTrace();
@@ -32,18 +33,24 @@ public class Audio {
 
       /* Create Audio Player */
       try {
-         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt));
+         // TODO: patch using this http://stackoverflow.com/a/20962169j
+         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), 1024);
          dispatch.addAudioProcessor(ap);
       } catch (LineUnavailableException e) {
          e.printStackTrace();
       }
    }
 
+   /* Create Empty Audio */
+   public Audio(int ms) {
+   }
+
    public void play() {
       previousFrame = System.nanoTime() / 1000000.0;
       lastReport = 0;
       songPos = 0;
-      new Thread(dispatch).start();
+      if (dispatch != null) // avoid starting music in case of dummy audio
+         new Thread(dispatch).start();
    }
 
    // call each frame
@@ -52,10 +59,12 @@ public class Audio {
       songPos += ptime - previousFrame;
       previousFrame = ptime;
 
-      double minimPos = dispatch.secondsProcessed() * 1000;
-      if (Math.abs(minimPos - lastReport) >= 0.1) {
-         songPos = (songPos + minimPos) / 2;  // easing
-         lastReport = minimPos;
+      if (dispatch != null ) {
+         double minimPos = dispatch.secondsProcessed() * 1000;
+         if (Math.abs(minimPos - lastReport) >= 0.1) {
+            songPos = (songPos + minimPos) / 2;  // easing
+            lastReport = minimPos;
+         }
       }
 
       return songPos;
