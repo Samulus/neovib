@@ -97,6 +97,8 @@ public class Game extends AbstractScene {
    }
 
    public void input(VibEvent event) {
-      System.out.println(beats.getFirst() / 1000 - audio.getPosition() / 1000);
+      if (beats != null && !beats.isEmpty() && audio != null) {
+         System.out.println(beats.getFirst() - audio.getPosition() / 1000);
+      }
    }
 }

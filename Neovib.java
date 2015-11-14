@@ -1,10 +1,8 @@
 import processing.core.PApplet;
 import src.event.EQ;
 import src.event.VibEvent;
-import src.input.Input;
+import src.input.MTInput;
 import src.scene.Scene;
-
-import java.awt.event.KeyEvent;
 
 public class Neovib extends PApplet {
 
@@ -20,9 +18,9 @@ public class Neovib extends PApplet {
    public void setup() {
       Scene.setContext(this);
       Scene.initScenes();
-
       Scene.focus(VibEvent.SCENE_TITLE);
       Scene.p.frameRate(1000);
+      new Thread(new MTInput()).start();
    }
 
    public void draw() {
@@ -47,15 +45,6 @@ public class Neovib extends PApplet {
       Scene.logic();
       Scene.render();
 
-   }
-
-   public void keyPressed() {
-      Input.poll(key);
-   }
-
-   public void keyPressed(KeyEvent e) {
-      System.out.println("Called");
-      EQ.enqueue(VibEvent.INPUT_ACCEPT);
    }
 
 }
