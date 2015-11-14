@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 public class BeatKonducta {
 
-   public LinkedList<Float> impeding;
+   public LinkedList<Double> impeding;
    private LinkedList<AbstractShape> render;
    private Audio audio;
    private LinkedList<Double> beat;
@@ -28,7 +28,7 @@ public class BeatKonducta {
       this.audio = audio;
       this.beat = beat;
       this.render = new LinkedList<AbstractShape>();
-      this.impeding = new LinkedList<Float>();
+      this.impeding = new LinkedList<Double>();
    }
 
    public LinkedList<AbstractShape> getList() {
@@ -54,7 +54,7 @@ public class BeatKonducta {
       if (beatTime == null) return false; // EOF
       double speed = calcSpeed(beatTime);
       if (speed < 10) return true; // higher = delay time until beat can enter (aka note scroll speed)
-      this.beat.removeFirst();
+      this.impeding.offer(this.beat.pollFirst());
       AbstractShape tmp = null;
       switch ((int)Scene.p.random(4) * 1) {
           case 0:
@@ -84,7 +84,7 @@ public class BeatKonducta {
 
       double pos = audio.getPosition();
       double dst = (beatTime * 1000) - pos; // where beat time is in Seconds, pos Millis
-      double travel = (Scene.p.width - (Scene.p.width / 7f) - 60);
+      double travel = (Scene.p.width - (Scene.p.width / 7f));
       double framesWeNeedToMoveIn = 60 * dst / 1000;
       double speed = (travel / framesWeNeedToMoveIn) ; // 1024 px / 240 frames = scroll at 4.26;
       return speed;

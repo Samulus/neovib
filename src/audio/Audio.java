@@ -1,8 +1,12 @@
 package src.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.io.*;
-import be.tarsos.dsp.io.jvm.*;
+import be.tarsos.dsp.io.PipedAudioStream;
+import be.tarsos.dsp.io.TarsosDSPAudioFormat;
+import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
+import be.tarsos.dsp.io.jvm.AudioPlayer;
+import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
+
 import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +38,7 @@ public class Audio {
       /* Create Audio Player */
       try {
          // TODO: patch using this http://stackoverflow.com/a/20962169j
-         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), 1024);
+         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), 1024); // remove 1024 when on chromebook
          dispatch.addAudioProcessor(ap);
       } catch (LineUnavailableException e) {
          e.printStackTrace();
@@ -42,8 +46,7 @@ public class Audio {
    }
 
    /* Create Empty Audio */
-   public Audio(int ms) {
-   }
+   public Audio(int ms) {}
 
    public void play() {
       previousFrame = System.nanoTime() / 1000000.0;
