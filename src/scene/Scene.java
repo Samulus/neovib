@@ -50,4 +50,9 @@ public class Scene {
       Scene.current.logic();
    }
 
+   /* Temporary Debugging Module */
+   public static AbstractScene snatch() {
+      return Scene.list.get("Game");
+   }
+
 }

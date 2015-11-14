@@ -1,14 +1,24 @@
-package src.musicdb; // ??? no .musicdb?
+package src.musicdb;
+
+import src.clock.Clock;
 
 import java.io.File;
 import java.util.*;
-import src.clock.Clock;
-
-// checkout : https://github.com/square/moshi for json
 
 public class MusicDatabase {
 
-   // http://stackoverflow.com/a/11658192
+   private ArrayList<String> db;
+
+   public MusicDatabase(String fpath) {
+      Collection<File> paths = listFileTree(new File(fpath));
+      db = new ArrayList<String>();
+      for (File f : paths) {
+         db.add(f.toString());
+      }
+      Collections.sort(db);
+   }
+
+   // Taken from: http://stackoverflow.com/a/11658192
    public static Collection<File> listFileTree(File dir) {
 
       Set<File> fileTree = new HashSet<File>();
@@ -22,30 +32,31 @@ public class MusicDatabase {
    public static void main(String[] args) {
 
       Clock c = new Clock();
-      File f = new File("/home/sam/music/");
-      Collection<File> paths = listFileTree(f);
-      ArrayList<String> strpaths = new ArrayList<String>();
 
-      String query = "Quasimoto";
-
-      for (File ff : paths) {
-         strpaths.add(ff.toString());
+      String query = "Death Grips";
+      MusicDatabase mdb = new MusicDatabase("/home/sam/music/");
+      for (String s : mdb.find(query)) {
+         System.out.println(s);
       }
 
-      Collections.sort(strpaths);
+      System.out.println(c.elapsedTime()); // 3-4s initially, 500ms after cacheing
 
-      for (String p : strpaths) {
+   }
 
-         for (String crap : p.split("/")) {
-            if (!crap.equals("") && crap.toLowerCase().replaceAll("\\s", "").contains(query.toLowerCase().replaceAll("\\s", ""))) { // hahahah
-               System.out.println(p);
-               break;
+   public ArrayList<String> find(String query) {
+
+      ArrayList<String> results = new ArrayList<String>();
+
+      for (String path : db) {
+         for (String token : path.split("/")) {
+            if (token.toLowerCase().replaceAll("\\s", "").contains(query.toLowerCase().replaceAll("\\s", ""))) { // hahahah
+               results.add(path);
+               break; // move on to next path
             }
          }
       }
 
-      System.out.println(c.elapsedTime());
-
+      return results;
    }
 
 }

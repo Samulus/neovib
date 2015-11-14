@@ -13,7 +13,6 @@ import src.ui.Menu;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class VideoLag extends AbstractScene {
 
@@ -64,7 +63,7 @@ public class VideoLag extends AbstractScene {
 
       /* Render Test */
       player.render();
-      track.render();
+      //track.render();
       for (AbstractShape s : konducta.getList()) {
          if (s.getDistance() <= Scene.p.width / 7)
             s.setVibrate(40);
@@ -95,7 +94,7 @@ public class VideoLag extends AbstractScene {
       if (event == VibEvent.INPUT_ACCEPT) {
 
          if (testRunning && !actualHitTimes.isEmpty()) {
-            double hit = Math.abs(actualHitTimes.pollFirst() - time.elapsedTime());
+            double hit = actualHitTimes.pollFirst() - time.elapsedTime();
             System.out.println(hit);
             average += hit;
          }
