@@ -3,19 +3,18 @@ package src.input;
 import processing.core.PConstants;
 import src.event.EQ;
 import src.event.VibEvent;
-import src.scene.Scene;
 
-public class Input {
+public class Input extends Thread {
 
    private static boolean keyHeld = false;
 
    public static void poll(char pressed) {
 
-      if (!Scene.p.keyPressed)
-         keyHeld = false;
+      //if (!Scene.p.keyPressed)
+      //keyHeld = false;
 
-      if (Scene.p.keyPressed && !keyHeld) {
-         keyHeld = true;
+      //if (Scene.p.keyPressed && !keyHeld) {
+      //keyHeld = true;
 
          switch (pressed) {
 
@@ -44,15 +43,10 @@ public class Input {
                EQ.enqueue(VibEvent.INPUT_PREVIOUS);
                break;
 
-            /* Player */
-            case ' ':
-               EQ.enqueue(VibEvent.PLAYER_DODGE);
-               break;
             //case 'h'
 
          }
 
-      }
 
    }
 }
