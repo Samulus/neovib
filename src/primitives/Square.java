@@ -1,5 +1,6 @@
 package src.primitives;
 
+import src.constants.VibConstant;
 import src.scene.Scene;
 
 public class Square extends AbstractShape {
@@ -10,13 +11,32 @@ public class Square extends AbstractShape {
 
    public void render() {
       Scene.p.pushMatrix();
-      Scene.p.translate(dst, Scene.p.height / 2f - 60, 20);
+      Scene.p.translate(dst, VibConstant.SHAPE_ORIGIN_Y);
 
-      Scene.p.line(0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
-      Scene.p.line(0 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate));
-      Scene.p.line(60 + Scene.p.random(super.vibrate), 0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
+      /* Status */
+      if (super.state.equals("hit")) {
+         int[] c = VibConstant.HIT_COLOR;
+         Scene.p.stroke(c[0], c[1], c[2]);
+      }
+
+      /* Outline */
+      Scene.p.line(Scene.p.random(super.vibrate), Scene.p.random(super.vibrate),
+              Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
+
+      Scene.p.line(Scene.p.random(super.vibrate), Scene.p.random(super.vibrate),
+              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate), Scene.p.random(super.vibrate));
+
+      Scene.p.line(VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
+              Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
+              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
+
+      /* Blackout Bottom */
       Scene.p.stroke(0);
-      Scene.p.line(0 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate), 60 + Scene.p.random(super.vibrate));
+      Scene.p.line(Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
+              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
+              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
+
+      /* Reset Color / Matrix */
       Scene.p.stroke(255);
       Scene.p.popMatrix();
    }
