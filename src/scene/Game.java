@@ -1,5 +1,6 @@
 package src.scene;
 
+import processing.core.PApplet;
 import src.audio.Audio;
 import src.audio.BeatKonducta;
 import src.audio.Detector;
@@ -97,6 +98,41 @@ public class Game extends AbstractScene {
    }
 
    public void input(VibEvent event) {
-      System.out.println(beats.getFirst() / 1000 - audio.getPosition() / 1000);
    }
+
+   public void input(char c) {
+      System.out.println(beats.getFirst() - audio.getPosition() / 1000);
+   }
+
+   /* Test */
+   public class LittleGame extends PApplet {
+
+      Game g = new Game();
+
+      public void settings() {
+         size(1280, 720, P2D);
+      }
+
+      public void setup() {
+         Scene.setContext(this);
+         Scene.initScenes();
+         frameRate(60);
+         Browser.fsong = new File("audio/mg.ogg");
+      }
+
+      public void draw() {
+         g.render();
+      }
+
+      public void keyPressed(char kk) {
+         g.input(kk);
+      }
+
+      public void init() {}
+   }
+
+   public static void main(String[] args) {
+      PApplet.main(LittleGame.class.getName());
+   }
+
 }
