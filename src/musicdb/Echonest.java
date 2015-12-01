@@ -2,73 +2,111 @@
    Echonest.java
    ----------------------------------------------
    The EchoNest module is responsible for providing an interface to query
-   the awesome EchoNest website. Right now it consists of one public method
+   the awesome Echonest API. Right now it consists of one public method
    to get artists similar to a given artist for use in the game.
+
+   The free API Key Provided is limited to 25 requests per minute. We use the time and
+   lastTime variables to ensure that we don't accidentally go over. I have to email
+   the nice people at Echonest and ask them for a special API key soon ;)
 
    Note that we're currently capped at 25 requests per minute. To help alleviate
    this limit all artists are cached in the cache folder. This way when you do
    Echonest.similar("Portishead"); we can look up if we already cached Portishead
    and get the artists similar to it.
 
-   A big thanks to EchoHonest for providing such an awesome API and library!
+   A big thanks to Echonest for providing such an awesome API and easy to use java library!
  */
 
 package src.musicdb;
 
 import com.echonest.api.v4.Artist;
 import com.echonest.api.v4.EchoNestAPI;
+import com.echonest.api.v4.EchoNestException;
+import src.clock.Clock;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class Echonest {
 
-   /* API / Cache Test */
-   public static void main(String[] args) {
+    private static final int maxRequest = 25;
+    private static EchoNestAPI Echo;
+    private static Clock time;
+    private static double lastTime;
+    private static int requests;
+    private static boolean connected = false;
 
-      EchoNestAPI echo = new EchoNestAPI(Secret.ECHOHONEST_KEY);
-      List<Artist> results = null;
+    public static void Connect(String apiKey) {
+        Echo = new EchoNestAPI(apiKey);
+        lastTime = 0;
+        time = new Clock();
+        connected = true;
+    }
 
-      LinkedList<Artist> list = new LinkedList<Artist>();
+    public static void Connect() {
+        Connect(Secret.ECHOHONEST_KEY);
+    }
 
-      String query = "FatBoy Slim";
+    private static boolean isLimit() {
+        if (time == null) {
+            System.err.println("Echonest: Connect to Echonest first");
+            throw new RuntimeException();
+        }
 
-      VibArtist martist = Cache.loadArtist(query);
+        double elapsed = time.elapsedTime();
+        if (elapsed - lastTime > 60000) {
+            lastTime = elapsed;
+            requests = 0;
+        }
 
-      if (martist != null) {
-         System.out.println("Cached\n-------");
-         System.out.println(martist.getName());
-         System.out.println(martist.getSimilar());
-         System.out.println(martist.getSimID());
-         return;
-      }
+        return requests >= maxRequest;
+    }
 
-      //return;
+    public static Set<VibArtist> getSimilar(String artist) {
 
-      martist = new VibArtist();
+        Set<VibArtist> output = new HashSet<VibArtist>();
+        List<Artist> results = null;
 
-      try {
-         results = echo.searchArtists(query);
+        // currently at maximum request limit
+        if (isLimit()) return null;
 
-         // Store Root Artist
-         martist.setName(results.get(0).getName());
-         martist.setID(results.get(0).getID());
+        try {
+            results = Echo.searchArtists(artist);
+        } catch (EchoNestException e) {
+            System.err.println("EchoNest: couldn't query Artist " + results);
+            return null;
+        }
 
-         // Store Similar Artists
-         for (Artist sim : results.get(0).getSimilar(15)) {
-            martist.addSimilar(sim.getName());
-            martist.addSimID(sim.getID());
-         }
+        // zero results
+        if (results == null) return null;
+        if (results.size() == 0) return null;
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
+        Artist root = results.get(1);
 
-      System.out.println(martist.getName());
-      System.out.println(martist.getSimilar());
-      System.out.println(martist.getSimID());
+        try {
+            for (Artist sim : root.getSimilar(10)) {
+                VibArtist tmp = new VibArtist(sim.getName(), sim.getID());
+                output.add(tmp);
+            }
+        } catch (EchoNestException e) {
+            System.err.println("EchoNest: couldn't get similar artists ");
+            return null;
+        }
 
-      Cache.saveArtist(query, martist);
-   }
+        return output;
+    }
+
+    // api test
+    public static void main(String[] args) {
+        Connect(Secret.ECHOHONEST_KEY);
+        Set<VibArtist> sim = getSimilar("Madvillian");
+        for (VibArtist s : sim) {
+            System.out.println(s.getName());
+            System.out.println(s.getId());
+            System.out.println("-------");
+        }
+
+    }
 }
