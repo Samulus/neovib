@@ -12,6 +12,7 @@ public class Circle extends AbstractShape {
 
    public void render() {
 
+       Scene.p.stroke(0);
       if (super.state.equals("hit")) {
          int[] c = VibConstant.HIT_COLOR;
          Scene.p.stroke(c[0], c[1], c[2]);
@@ -21,7 +22,6 @@ public class Circle extends AbstractShape {
       Scene.p.pushMatrix();
       Scene.p.translate(dst, VibConstant.SHAPE_ORIGIN_Y);
       Scene.p.ellipse(Scene.p.random(super.vibrate), Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE, VibConstant.SHAPE_SIZE);
-      Scene.p.stroke(255);
       Scene.p.popMatrix();
    }
 

@@ -13,6 +13,8 @@ public class Square extends AbstractShape {
       Scene.p.pushMatrix();
       Scene.p.translate(dst, VibConstant.SHAPE_ORIGIN_Y);
 
+       Scene.p.stroke(0);
+
       /* Status */
       if (super.state.equals("hit")) {
          int[] c = VibConstant.HIT_COLOR;
@@ -30,14 +32,7 @@ public class Square extends AbstractShape {
               Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
               VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
 
-      /* Blackout Bottom */
-      Scene.p.stroke(0);
-      Scene.p.line(Scene.p.random(super.vibrate), VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
-              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
-              VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
-
       /* Reset Color / Matrix */
-      Scene.p.stroke(255);
       Scene.p.popMatrix();
    }
 

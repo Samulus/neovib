@@ -22,7 +22,6 @@ public abstract class AbstractShape {
       return this.dst;
    }
 
-   // "scrolling", "hit", "missed"
    public void setState(String state) {
       this.state = state;
    }

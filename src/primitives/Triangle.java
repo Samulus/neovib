@@ -27,13 +27,12 @@ public class Triangle extends AbstractShape {
               VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
 
       /* Blackout Bottom */
-      Scene.p.stroke(0);
       Scene.p.line(Scene.p.random(super.vibrate),
               VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
               VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate),
               VibConstant.SHAPE_SIZE + Scene.p.random(super.vibrate));
 
-      Scene.p.stroke(255);
+       Scene.p.stroke(0);
       Scene.p.popMatrix();
    }
 }

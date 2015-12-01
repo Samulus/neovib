@@ -9,10 +9,6 @@ public class Track {
 
    float vibrate;
 
-   public void setVibrate(float vibrate) {
-      this.vibrate = vibrate;
-   }
-
    public void render(LinkedList<AbstractShape> lines) {
 
       Scene.p.pushMatrix();
@@ -27,4 +23,11 @@ public class Track {
       Scene.p.popMatrix();
    }
 
+    public float getVibrate() {
+        return vibrate;
+    }
+
+    public void setVibrate(float vibrate) {
+        this.vibrate = vibrate;
+    }
 }
