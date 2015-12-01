@@ -1,16 +1,21 @@
 package src.audio;
 
-import be.tarsos.dsp.*;
-import be.tarsos.dsp.io.jvm.*;
-import be.tarsos.dsp.util.fft.*;
-import java.io.*;
-import java.util.*;
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.AudioEvent;
+import be.tarsos.dsp.AudioProcessor;
+import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
+import be.tarsos.dsp.util.fft.FFT;
+import be.tarsos.dsp.util.fft.HammingWindow;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Detector {
 
    static final int CUTOFF  = 20;   // 20
-   static final double MEAN = 1.3f; // 1.45f;
-   static final double DST = 0.3f;  // 0.1
+    static final double MEAN = 1.3; // 1.3f
+    static final double DST = 0.23;
 
    public static LinkedList<Double> load(File f) {
 
@@ -115,7 +120,8 @@ public class Detector {
             for (int i = 0; i < peaks.size(); ++i) {
                double p = peaks.get(i);
                if (p > 0) {
-                  if (Math.abs((i * time) - prev) >= DST) { // if there is at least DST seconds betof each other.                     //System.out.println(i * time);
+                   if (Math.abs((i * time) - prev) >= DST) { // if there is at least DST seconds betof each otherw.
+                       // System.out.println(i * time);
                      output.add(i * time);
                      count++;
                   }
