@@ -76,23 +76,23 @@ public final class AudioPlayer implements AudioProcessor {
 
 //       int i=0;
       for (Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
-         System.out.println(mixerInfo.getName());
-          System.out.println(mixerInfo.getDescription());
-          System.out.println("----");
+         //System.out.println(mixerInfo.getName());
+          //System.out.println(mixerInfo.getDescription());
+          //System.out.println("----");
          try {
             Mixer mixer = AudioSystem.getMixer(mixerInfo);
             line = (SourceDataLine) mixer.getLine(info);
              if (mixerInfo.getName().equalsIgnoreCase("PCH [plughw:0,0]")) {
                  line.open(format);
                  line.start();
-                 System.out.println("BAIL");
+                 //System.out.println("BAIL");
                  return;
              }
             if (line == null) {
                continue; //Doesn't support this format
             }
          } catch (Exception ex) {
-            System.out.println("Can't open this");
+            //System.out.println("Can't open this");
             continue;
          }
          try {
@@ -104,18 +104,18 @@ public final class AudioPlayer implements AudioProcessor {
 
 
       if (line == null) {
-         System.out.println("Couldn't get a line");
+         //System.out.println("Couldn't get a line");
          //No dataline capable of *really* playing the stream
       } else {
          //We have a non-lying dataline!
          if (!line.isOpen()){
             line.open(format);
-            System.out.println("Opened");
+            //System.out.println("Opened");
          }
 
          if (!line.isRunning()) {
             line.start();
-            System.out.println("Started");
+            //System.out.println("Started");
          }
       }
 
