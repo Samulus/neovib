@@ -1,12 +1,11 @@
 package src.scene;
 
-import processing.core.PApplet;
 import src.audio.Audio;
 import src.audio.BeatKonducta;
 import src.audio.Detector;
-import src.clock.Clock;
 import src.event.EQ;
 import src.event.VibEvent;
+import src.input.Input;
 import src.primitives.AbstractShape;
 import src.primitives.Player;
 import src.primitives.Track;
@@ -14,125 +13,134 @@ import src.primitives.Track;
 import java.io.File;
 import java.util.LinkedList;
 
-;
-
 public class Game extends AbstractScene {
 
-   /* Audio */
-   public Audio audio;
-   public LinkedList<Double> beats;
-   public BeatKonducta konducta;
-   /* Graphics */
-   Player player = new Player();
-   Track track = new Track();
-   /* Input Clock */
-   Clock inclock;
+    /* Audio */
+    public Audio audio;
+    public LinkedList<Double> beats;
+    public BeatKonducta konducta;
+    /* Graphics */
+    Player player = new Player();
+    Track track = new Track();
+    LinkedList<AbstractShape> hit;
+    private File song;
 
-   public Game() {
-      player = new Player();
-      track = new Track();
-   }
+    public Game() {
+        player = new Player();
+        track = new Track();
+        hit = new LinkedList<AbstractShape>();
+    }
 
-   public void setup() {
+    public void pass(Object songPath) {
+        this.song = (File) songPath;
+    }
 
-      String fpath = "";
+    public void setup() {
 
-      /* Load Browser Song */
-      try {
-         fpath = Browser.fsong.getCanonicalPath();
-      } catch (Exception e) {
-         e.printStackTrace();
-         System.out.println("Game.java: unable to open file");
-      }
+        String fpath = "";
 
-      audio = new Audio(fpath, 1024);
-      beats = Detector.load(new File(fpath));
+        /* Load Browser Song */
+        try {
+            fpath = this.song.getCanonicalPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Game.java: unable to open file " + this.song.getPath());
+        }
 
-      // avoid songs with no / few beats */
-      if (beats.size() < 5) {
-         EQ.enqueue(VibEvent.SCENE_BROWSER);
-         return;
-      }
+        audio = new Audio(fpath);
+        beats = Detector.load(new File(fpath));
 
-      konducta = new BeatKonducta(audio, beats);
-      audio.play();
-      inclock = new Clock();
-   }
+        if (beats.size() < 5) {
+            EQ.enqueue(VibEvent.SCENE_BROWSER);
+            return;
+        }
 
-   public void render() {
-      Scene.p.background(0);
+        konducta = new BeatKonducta(audio, beats);
+        audio.play();
 
-      /* Onscreen Elements */
-      player.render();
-      track.render(konducta.getList());
+    }
 
-      /* Debug */
-      Scene.p.pushMatrix();
-      Scene.p.translate(Scene.p.width / 1.5f, Scene.p.height / 16f);
-      if (!konducta.impeding.isEmpty()) {
-         Scene.p.text(audio.getPosition() + "", 0, 0);
-         Scene.p.text(konducta.impeding.getFirst() + "", 0, 64);
-      }
+    public void render() {
+        Scene.p.background(255);
+        Scene.p.stroke(0);
+        Scene.p.strokeWeight(3);
 
-      Scene.p.popMatrix();
+        /* Onscreen Elements */
+        player.render();
+        track.render(konducta.getList());
+
+        /* Debug */
+        Scene.p.pushMatrix();
+        Scene.p.translate(Scene.p.width / 1.5f, Scene.p.height / 16f);
 
 
-      /* Render Obstacles */
-      for (AbstractShape s : konducta.getList()) {
-         if (s.getDistance() <= Scene.p.width / 7) {
-            s.setState("hit");
-            s.setVibrate(30);
-         }
-         s.render();
-      }
-   }
+        double pos = audio.getPosition() / 1000;
+        Scene.p.popMatrix();
 
-   public void logic() {
-      konducta.nextReady();
-      konducta.deleteOld();
-      for (AbstractShape s : konducta.getList()) {
-         player.logic(s.getDistance());
-         s.advance();
-      }
+        // remove hit obstacles
+        if (!konducta.getList().isEmpty()) {
+            LinkedList<AbstractShape> q = konducta.getList();
+            AbstractShape s = q.peekFirst();
+            if (s.getDistance() <= Scene.p.width / 7) {
+                hit.add(s);
+                s.setState("hit");
+                for (AbstractShape repeat : konducta.getList()) repeat.setVibrate(1);
+                s.setVibrate(50);
+                q.pollFirst();
+                track.setVibrate(20);
+                konducta.impeding.poll();
+            }
+        }
 
-   }
+        for (AbstractShape s : hit) {
+            // TODO: modifying something we're iterating over = bad
+            if (s.getDistance() <= -60) hit.pollFirst();
+            else s.render();
+        }
 
-   public void input(VibEvent event) {
-   }
+        track.setVibrate(Scene.p.constrain(track.getVibrate() * 0.95f, 1, 20));
 
-   public void input(char c) {
-      System.out.println(beats.getFirst() - audio.getPosition() / 1000);
-   }
+        for (AbstractShape s : konducta.getList()) {
+            s.render();
+        }
+    }
 
-   /* Test */
-   public class LittleGame extends PApplet {
+    public void logic() {
 
-      Game g = new Game();
+        if (Input.HAPPENING && !konducta.impeding.isEmpty()) {
 
-      public void settings() {
-         size(1280, 720, P2D);
-      }
+            double pos = audio.getPosition() / 1000;
+            double btime = konducta.impeding.peek();
+            double delta = btime - pos;
 
-      public void setup() {
-         Scene.setContext(this);
-         Scene.initScenes();
-         frameRate(60);
-         Browser.fsong = new File("audio/mg.ogg");
-      }
+            System.out.println("Hit @ " + delta);
 
-      public void draw() {
-         g.render();
-      }
 
-      public void keyPressed(char kk) {
-         g.input(kk);
-      }
+        }
 
-      public void init() {}
-   }
+        konducta.deleteOld();
+        konducta.nextReady();
 
-   public static void main(String[] args) {
-      PApplet.main(LittleGame.class.getName());
-   }
+        for (AbstractShape s : konducta.getList()) {
+            player.logic(s.getDistance());
+            s.advance();
+        }
+
+        for (AbstractShape s : hit) {
+            s.advance();
+            s.setVibrate(Scene.p.constrain(s.getVibrate() * 0.95f, 1, 20));
+        }
+
+    }
+
+    public void input(VibEvent event) {
+
+        if (event == VibEvent.INPUT_PREVIOUS) {
+            audio.stop();
+            Scene.pass(VibEvent.SCENE_SIMILAR, this.audio.getArtist());
+            Scene.focus(VibEvent.SCENE_PAUSE);
+        }
+    }
+
 
 }
