@@ -1,63 +1,44 @@
+/*
+    # VibArtist.java
+
+    VibArtist is a small abstract data structure used in this package
+    to keep track of a mutual pairing of an Artist and their key ID in the
+    Echonest database. I would use a struct but this isn't C.
+
+ */
+
 package src.musicdb;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class VibArtist implements Serializable {
 
-   /* Root Artist */
-   private String name;
-   private String id;
+    private String name;
+    private String id;
 
-   /* Similar Artists */
-   private ArrayList<String> similar;
-   private ArrayList<String> simids;
+    public VibArtist(String name, String id) {
+        this.name = name;
+        this.id = id;
+    }
 
-   public VibArtist() {
-      name = "";
-      similar = new ArrayList<String>();
-      id = "";
-      simids = new ArrayList<String>();
-   }
+    public String getName() {
+        return name;
+    }
 
-   /* Getters */
-   public String getName() {
-      return name;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   /* Setters */
-   public void setName(String name) {
-      this.name = name;
-   }
+    public String getId() {
+        return id;
+    }
 
-   public ArrayList<String> getSimilar() {
-      return similar;
-   }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-   public void setSimilar(ArrayList<String> similar) {
-      this.similar = similar;
-   }
-
-   public ArrayList<String> getSimID() {
-      return simids;
-   }
-
-   public void setID(String id) {
-      this.id = id;
-   }
-
-   public void setSimids(ArrayList<String> ids) {
-      this.simids = ids;
-   }
-
-   /* Add */
-   public void addSimilar(String s) {
-      this.similar.add(s);
-   }
-
-   public void addSimID(String id) {
-      this.simids.add(id);
-   }
-
+    public String toString() {
+        return "Artist: " + name + "\nID: " + id;
+    }
 
 }
