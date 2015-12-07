@@ -1,67 +1,87 @@
 package src.scene;
 
 import src.event.VibEvent;
+import src.musicdb.MusicDB;
 import src.ui.Menu;
+import src.ui.SimilarArtists;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
 public class Pause extends AbstractScene {
 
-    private ArrayList<String> options = new ArrayList<String>();
-    private Menu menu;
-    private Set<String> artists;
-    private String artist;
+   private ArrayList<String> options = new ArrayList<String>();
+   private Menu menu;
+   private Set<String> artists;
+   private String artist;
+   private SimilarArtists sim;
+   private boolean simMode;
 
-    public Pause() {
-        options = new ArrayList<String>();
-        options.add("Try Again");
-        options.add("New Random Song");
-        options.add("New Similar Artist");
-        options.add("Return to Browser");
-        menu = new Menu(options, "noscroll");
-    }
 
-    public void pass(Object data) {
-        artist = (String) data;
-    }
+   public Pause() {
+      options = new ArrayList<String>();
+      options.add("Try Again");
+      options.add("Return to Browser");
+      sim = new SimilarArtists();
+      menu = new Menu(options, true);
+   }
+
+   public void pass(Object data) {
+      artist = (String) data;
+   }
 
    public void setup() {
-       // TODO: check if its offline first
-       //Echonest.getSimilar(artist);
+      System.out.println("Working");
+      if (MusicDB.getLibraryPath().equals("(not set)")) {
+         options.remove("New Random Song");
+         simMode = false;
+      } else if (!options.contains("New Random Song")) {
+         options.add(1, "New Random Song");
+         simMode = true;
+      }
+
+      if (options.contains("New Random Song")) {
+         simMode = true;
+         sim.setup(artist);
+      }
+
+
    }
 
    public void render() {
-       Scene.p.background(0);
-       menu.render(Scene.p.width / 7f, Scene.p.height / 2f);
+      Scene.p.background(0);
+      menu.render(Scene.p.width / 7f, Scene.p.height / 2f);
+      if (simMode) {
+         sim.render();
+         Scene.p.pushMatrix();
+         Scene.p.translate(Scene.p.width / 10f, Scene.p.height / 1.1f);
+         Scene.p.text("Similar Artists are displayed to the right", 0, 0);
+         Scene.p.popMatrix();
+      }
    }
 
    public void logic() {
    }
 
    public void input(VibEvent event) {
-       menu.navigate(event);
-       if (event == VibEvent.INPUT_ACCEPT) {
+      menu.navigate(event);
+      if (event == VibEvent.INPUT_ACCEPT) {
 
-           if (options.get(menu.getIndex()).equals("Try Again")) {
-               Scene.focus(VibEvent.SCENE_GAME);
-           }
+         if (options.get(menu.getIndex()).equals("Try Again")) {
+            Scene.focus(VibEvent.SCENE_GAME);
+         }
 
-           if (options.get(menu.getIndex()).equals("New Similar Artist")) {
+         if (options.get(menu.getIndex()).equals("New Random Song")) {
+            String song = MusicDB.getRandom();
+            Scene.pass(VibEvent.SCENE_GAME, new File(song));
+            Scene.focus(VibEvent.SCENE_GAME);
+         }
 
-               if (this.artist == null) {
-                   System.err.println("Pause: you were supposed to pass a " +
-                           "similar artist to the scene first");
-                   throw new RuntimeException();
-               }
-
-               Scene.focus(VibEvent.SCENE_SIMILAR);
-           }
-
-           if (options.get(menu.getIndex()).equals("Return to Browser")) {
-               Scene.focus(VibEvent.SCENE_BROWSER);
-           }
-       }
+         if (options.get(menu.getIndex()).equals("Return to Browser")) {
+            Scene.focus(VibEvent.SCENE_BROWSER);
+         }
+      }
    }
 
 
