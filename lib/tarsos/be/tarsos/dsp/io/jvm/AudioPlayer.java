@@ -61,69 +61,28 @@ public final class AudioPlayer implements AudioProcessor {
     * @throws LineUnavailableException If no output LineWavelet is available.
     */
 
-   public AudioPlayer(final AudioFormat format) throws LineUnavailableException {
-      final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+   public AudioPlayer(final AudioFormat format, String mixerName, int bufferSize) throws LineUnavailableException {
+      final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format, bufferSize);
       this.format = format;
 
-       //System.out.println(AudioSystem.getMixerInfo().length);
-       /*
-       Mixer.Info minfo = AudioSystem.getMixerInfo()[0]; // 2, 3, 4, 5 cash,
-       Mixer mix = AudioSystem.getMixer(minfo);
-       line = (SourceDataLine) mix.getLine(info);
-       line.open(format);
-       line.start();
-       */
-
-//       int i=0;
       for (Mixer.Info mixerInfo : AudioSystem.getMixerInfo()) {
-         //System.out.println(mixerInfo.getName());
-          //System.out.println(mixerInfo.getDescription());
-          //System.out.println("----");
-         try {
-            Mixer mixer = AudioSystem.getMixer(mixerInfo);
-            line = (SourceDataLine) mixer.getLine(info);
-             if (mixerInfo.getName().equalsIgnoreCase("PCH [plughw:0,0]")) {
-                 line.open(format);
-                 line.start();
-                 //System.out.println("BAIL");
-                 return;
-             }
-            if (line == null) {
-               continue; //Doesn't support this format
-            }
-         } catch (Exception ex) {
-            //System.out.println("Can't open this");
-            continue;
-         }
-         try {
-            line.close();
-         } catch (Exception ex) {
-            ex.printStackTrace(); //Shouldn't get here
-         }
-      }
-
-
-      if (line == null) {
-         //System.out.println("Couldn't get a line");
-         //No dataline capable of *really* playing the stream
-      } else {
-         //We have a non-lying dataline!
-         if (!line.isOpen()){
-            line.open(format);
-            //System.out.println("Opened");
-         }
-
-         if (!line.isRunning()) {
+         Mixer mixer = AudioSystem.getMixer(mixerInfo);
+         if (mixerInfo.getName().equalsIgnoreCase(mixerName)) {
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open();
             line.start();
-            //System.out.println("Started");
+            break;
          }
       }
-
-
-      //line = (SourceDataLine) AudioSystem.getLine(info);
-      //line.open();
-      //line.start();
    }
+
+   public AudioPlayer(final AudioFormat format)	throws LineUnavailableException {
+		final DataLine.Info info = new DataLine.Info(SourceDataLine.class,format);
+		this.format = format;
+		line = (SourceDataLine) AudioSystem.getLine(info);
+		line.open();
+		line.start();
+	}
 
    public AudioPlayer(final AudioFormat format, int bufferSize) throws LineUnavailableException {
       final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format, bufferSize);

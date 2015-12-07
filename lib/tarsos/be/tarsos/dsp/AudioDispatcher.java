@@ -117,7 +117,7 @@ public class AudioDispatcher implements Runnable {
 	/**
 	 * If true the dispatcher stops dispatching audio.
 	 */
-	private boolean stopped;
+   private boolean stopped;
 	
 	/**
 	 * If true then the first buffer is only filled up to buffer size - hop size
