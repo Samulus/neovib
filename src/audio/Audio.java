@@ -47,7 +47,7 @@ public class Audio {
       /* Create Audio Player */
       try {
          System.out.println(Sound.getSelectedMixer());
-         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), Sound.getSelectedMixer(), 1024); // remove 1024 when on chromebook
+         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), 1024); // remove 1024 when on chromebook
          dispatch.addAudioProcessor(ap);
       } catch (LineUnavailableException e) {
          e.printStackTrace();
