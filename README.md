@@ -8,8 +8,6 @@ currently but works on Linux.
 # Screenshot
 ![neovib](docs/screenshot.png)
 
-# Footage
-
 # Controls
 
 |Button | Action|
