@@ -24,6 +24,9 @@ import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import src.clock.Clock;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,82 +34,126 @@ import java.util.Set;
 
 public class Echonest {
 
-    private static final int maxRequest = 25;
-    private static EchoNestAPI Echo;
-    private static Clock time;
-    private static double lastTime;
-    private static int requests;
-    private static boolean connected = false;
+   private static final int maxRequest = 25;
+   private static EchoNestAPI Echo;
+   private static Clock time;
+   private static double lastTime;
+   private static int requests;
+   private static boolean connected = false;
 
-    public static void Connect(String apiKey) {
-        Echo = new EchoNestAPI(apiKey);
-        lastTime = 0;
-        time = new Clock();
-        connected = true;
-    }
+   public static void Connect(String apiKey) {
+      Echo = new EchoNestAPI(apiKey);
+      lastTime = 0;
+      time = new Clock();
+      connected = true;
+   }
 
-    public static void Connect() {
-        Connect(Secret.ECHOHONEST_KEY);
-    }
+   public static void Connect() {
+      Connect(Secret.ECHOHONEST_KEY);
+   }
 
-    private static boolean isLimit() {
-        if (time == null) {
-            System.err.println("Echonest: Connect to Echonest first");
-            throw new RuntimeException();
-        }
+   public static void ConnectFromFile() {
 
-        double elapsed = time.elapsedTime();
-        if (elapsed - lastTime > 60000) {
-            lastTime = elapsed;
-            requests = 0;
-        }
+      File file = new File("apikey.txt");
+      String key = "";
+      if (file.exists()) {
+         try {
+            FileReader r = new FileReader(file);
+            BufferedReader br = new BufferedReader(r);
+            key = br.readLine();
+         } catch (Exception e) {
+         }
+      }
 
-        return requests >= maxRequest;
-    }
+      Connect(key);
+   }
 
-    public static Set<VibArtist> getSimilar(String artist) {
+   private static boolean isLimit() {
+      if (time == null) {
+         System.err.println("Echonest: Connect to Echonest first");
+         throw new RuntimeException();
+      }
 
-        Set<VibArtist> output = new HashSet<VibArtist>();
-        List<Artist> results = null;
+      double elapsed = time.elapsedTime();
+      if (elapsed - lastTime > 60000) {
+         lastTime = elapsed;
+         requests = 0;
+      }
 
-        // currently at maximum request limit
-        if (isLimit()) return null;
+      return requests >= maxRequest;
+   }
 
-        try {
-            results = Echo.searchArtists(artist);
-        } catch (EchoNestException e) {
-            System.err.println("EchoNest: couldn't query Artist " + results);
-            return null;
-        }
+   public static String getID(String artist) {
 
-        // zero results
-        if (results == null) return null;
-        if (results.size() == 0) return null;
+      if (!connected) return null;
 
-        Artist root = results.get(1);
+      String result = null;
+      try {
+         // TODO: CAN CRASH HERE
+         result = Echo.searchArtists(artist).get(0).getID();
+         if (result == null) return null;
+      } catch (Exception e) {
+         e.printStackTrace();
+         return null; /* we couldn't get the ID,
+                         probably not connected */
+      }
 
-        try {
-            for (Artist sim : root.getSimilar(10)) {
-                VibArtist tmp = new VibArtist(sim.getName(), sim.getID());
-                output.add(tmp);
-            }
-        } catch (EchoNestException e) {
-            System.err.println("EchoNest: couldn't get similar artists ");
-            return null;
-        }
+      Echonest.requests++;
+      return result;
+   }
 
-        return output;
-    }
+   public static Set<VibArtist> getSimilar(String artist) {
 
-    // api test
-    public static void main(String[] args) {
-        Connect(Secret.ECHOHONEST_KEY);
-        Set<VibArtist> sim = getSimilar("Madvillian");
-        for (VibArtist s : sim) {
-            System.out.println(s.getName());
-            System.out.println(s.getId());
-            System.out.println("-------");
-        }
+      if (!connected) return null;
 
-    }
+      Set<VibArtist> output = new HashSet<VibArtist>();
+      List<Artist> results = null;
+
+      // currently at maximum request limit
+      if (isLimit()) return null;
+
+      try {
+         results = Echo.searchArtists(artist);
+      } catch (EchoNestException e) {
+         System.err.println("EchoNest: couldn't query Artist " + results);
+         return null;
+      }
+
+      Echonest.requests++;
+
+      // zero results
+      if (results == null) return null;
+      if (results.size() == 0) return null;
+
+      Artist root = results.get(0);
+      ;
+
+      try {
+         for (Artist sim : root.getSimilar(15)) {
+            VibArtist tmp = new VibArtist(sim.getName(), sim.getID());
+            output.add(tmp);
+         }
+      } catch (EchoNestException e) {
+         System.err.println("EchoNest: couldn't get similar artists ");
+         return null;
+      }
+
+      return output;
+   }
+
+   // api test
+   public static void main(String[] args) {
+      ConnectFromFile();
+      Set<VibArtist> sim = getSimilar("Death Grips");
+      for (VibArtist s : sim) {
+         System.out.println(s.getName());
+         System.out.println(s.getId());
+         System.out.println("-------");
+      }
+
+   }
+
+   public static boolean isConnected() {
+      return connected;
+   }
 }
