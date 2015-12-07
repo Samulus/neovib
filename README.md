@@ -2,7 +2,7 @@
 neovib is a simple rhythm game inspired by classic rhythm games like Osu!
 and Vib-Ribbon. In Neovib the user provides an audio file / selects a random
 audio file from their music library and the game will automatically generate
-obstacles that coincide with musical onsets in the game. It's an early state
+obstacles that coincide with musical onsets in the game. It's in an early state
 currently but works on Linux. 
 
 # Screenshot
@@ -20,6 +20,7 @@ currently but works on Linux.
 |s      | Press when a Circle is coming |
 |d      | Press when a Square is coming |
 |f      | Press when a Triangle is coming |
+|Esc    | Quit Game|
 
 # Try It
 Neovib requires java8. The project doesn't correctly import in Eclipse at the moment but works 
