@@ -1,6 +1,5 @@
 package src.primitives;
 
-import src.constants.VibConstant;
 import src.scene.Scene;
 
 import java.util.LinkedList;
@@ -12,7 +11,8 @@ public class Track {
    public void render(LinkedList<AbstractShape> lines) {
 
       Scene.p.pushMatrix();
-      Scene.p.translate(0, VibConstant.TRACK_ORIGIN_Y);
+      Scene.p.translate(0, Scene.p.height / 2);
+      Scene.p.stroke(0);
 
       /* Flatline */
       Scene.p.line(Scene.p.random(vibrate),
