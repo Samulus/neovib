@@ -1,13 +1,13 @@
 # Project Specification
 
-> 1. What dataset or real-world application does your project relate to?
+> 1) What dataset or real-world application does your project relate to?
 
 For my project I've decided to make a clone of an old game for the original 
 Playstation 1 called Vib Ribbon. It's an esoteric and fun little rhythm game 
 that allows you to use any music cd and generates a track of obstacles 
 that the player must avoid in sync with the music.
 
-> 2. What is the problem you are trying to solve or need are you trying to meet?
+> 2) What is the problem you are trying to solve or need are you trying to meet?
 
 The game actually reads the audio, performs analysis on the raw audio data to determine 
 the beats / rhythmic peeks of the song, and then generates a track 
@@ -26,24 +26,24 @@ The original algorithm in Vib-Ribbon had a tendency to generate subpar levels on
 Shoegaze, Metal, and generally "aggressive" music without a strong beat. 
 This is one of the primary things I intend to improve. 
 
-> 3. How did you solve this problem or meet this need? What is the basic functionality of your project? 
+> 3) How did you solve this problem or meet this need? What is the basic functionality of your project? 
 
 What I ultimately ended up doing wasn't multiple passes but a single pass using an Onset detection algorithm
 that records when the peeks in the song occur and stores them in a LinkedList. We then
 pass this LinkedList to the Game and BeatKonducta modules so that we can dynamically add 
 obstacles for the player to dodge in real time.
 
-> 4. Explain the knowledge you demonstrated as part of this project. You should touch on at least 5 algorithms or data structures used in your code design.
+> 4) Explain the knowledge you demonstrated as part of this project. You should touch on at least 5 algorithms or data structures used in your code design.
 
 I used ArrayLists, LinkedLists, Queues, Sets, Graphs, and Primitive Arrays throughout
 the assignment for almost every single thing. There are examples in CPI220_RUBRIC.MD
 
-> 5. Explain 5 skills you demonstrated as part of this project. Reference specific examples from your implementation or design process.
+> 5) Explain 5 skills you demonstrated as part of this project. Reference specific examples from your implementation or design process.
 
 I used Sorting, Graphs, Server / Client, Algorithm Analysis, and Dealing With Buggy Libraries.
 There are examples in CPI220_RUBRIC.md
 
-> 6. What external libraries or tools did you use to make your project more interesting and successful? How did they shape your thought process? What challenges did you have, and how did you try to overcome them?
+> 6) What external libraries or tools did you use to make your project more interesting and successful? How did they shape your thought process? What challenges did you have, and how did you try to overcome them?
 
 I used Processing and TarsosDSP and FFMPEG which was good. TarsosDSP uses JSound internally though
 which was bad and proved to be super buggy. I ultimately couldn't find a cross platform
@@ -56,7 +56,7 @@ you have to create a textfile in the games root directory called apikey.txt that
 Then you have to set  a music path in the  game. Then everytime you play a song
 and get to the end screen it will show similar artists using a graph.
 
-> 7. Describe the organization of your code. In what ways do you think it is well organized? In what ways could the organization be improved? To answer this questions, imagine if you had to fix bugs or add new functionality to your code: would it be easy to do so?
+> 7) Describe the organization of your code. In what ways do you think it is well organized? In what ways could the organization be improved? To answer this questions, imagine if you had to fix bugs or add new functionality to your code: would it be easy to do so?
 
 The audio package is responsible for interfacing with TarsosDSP, detecting / manging incoming shapes, and actually performing
 the onset detection analysis on a provided audiofile
@@ -88,12 +88,12 @@ The util package contains a single class Util that has a few small odd but neede
 
 The game is pretty modular and not too hard to follow.
 
-> 8. What approaches or solutions did you consider to your problem? Why did you decide on the approach you ultimately took?
+> 8) What approaches or solutions did you consider to your problem? Why did you decide on the approach you ultimately took?
 
 Ultimately I went with the Onset note detection method vs the raw frequency / bass detection
 because it was more accurate. I went into more detail in CPI220_RUBRIC.md
 
-> 9. 9. Does your code always return a correct response? Is it efficient? Explain your answers, and discuss in what ways you think its performance could be improved.
+> 9) Does your code always return a correct response? Is it efficient? Explain your answers, and discuss in what ways you think its performance could be improved.
 
 Due to the nature of beat detection it can't always return a correct result. But in the majority of cases the algorithm does return a correct result in the vast majority of cases.
 I tried almost every single song in my 26GB library of music across generes and it generated a satisfying playthrough in about 85-90% of cases.

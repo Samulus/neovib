@@ -19,39 +19,39 @@ of the project.
 Neovib makes extensive use of:
 
 * ArrayLists
-** Used in FileBrowser module to list files
-** Used in Menu module to list files
-** Used in Beat Detection algorithm to store track peek information
-** Various uses
+  * Used in FileBrowser module to list files
+  * Used in Menu module to list files
+  * Used in Beat Detection algorithm to store track peek information
+  * Various uses
 * LinkedLists
-** Used in Game and Beat Detection modules
-** Various uses 
+  * Used in Game and Beat Detection modules
+  * Various uses 
 * HashTables
-** Used in the Graph for the Adjaceny List
-** Used in the Scene module for storing eachgame Scene
+  * Used in the Graph for the Adjaceny List
+  * Used in the Scene module for storing eachgame Scene
 * Graphs
-** Used for looking up artists similar to the one just played.
+  * Used for looking up artists similar to the one just played.
 * Queues
-** The main game input queue
-** The incoming beats in the game
+  * The main game input queue
+  * The incoming beats in the game
 * Sets
-** Used to keep track of similar Aritsts
+  * Used to keep track of similar Aritsts
 
 Plus many more unmentioned uses.
 
 > The project properly demonstrates a minimum of 5 skills acquired in the course.
 
 * Sorting
-** We use Timsort in the FileBrowser module via the Collections.sort method to 
-automatically sort filesystem information so that paths are displayed in order.
+  * We use Timsort in the FileBrowser module via the Collections.sort method to 
+    automatically sort filesystem information so that paths are displayed in order.
 
 * Graphs
-** If the user provides a valid Echonest APIKEY in a textfile called apikey.txt
-in the root directory on the first line and then subsequentally sets a music
-library path in the game, then everytime the user pauses the game / ends a track
-we use the awesome Echonest API to look up artists similar to the one just played
-and display those to the right. The information is stored in a graph offline and loaded
-into a graph during gameplay.
+  * If the user provides a valid Echonest APIKEY in a textfile called apikey.txt
+    in the root directory on the first line and then subsequentally sets a music
+    library path in the game, then everytime the user pauses the game / ends a track
+    we use the awesome Echonest API to look up artists similar to the one just played
+    and display those to the right. The information is stored in a graph offline and loaded
+    into a graph during gameplay.
 
 * Server / Client interfaces
 The games various screens are referred to as "Scenes" internally in the game.
