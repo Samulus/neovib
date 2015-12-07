@@ -13,9 +13,9 @@ import java.util.LinkedList;
 
 public class Detector {
 
-   static final int CUTOFF  = 20;   // 20
-    static final double MEAN = 1.3; // 1.3f
-    static final double DST = 0.23;
+   static final int CUTOFF = 20;   // 20
+   static final double MEAN = 1.3; // 1.3f
+   static final double DST = 0.25; // 0.25 = perfect
 
    public static LinkedList<Double> load(File f) {
 
@@ -66,8 +66,6 @@ public class Detector {
             for (int i = 0; i < spectrum.length; ++i) {
                spectrum[i] = (double) buff[i];
             }
-
-            //System.arraycopy(buff, 0, spectrum, 0, spectrum.length);
 
             /* calculate spectrual flux (distance variance between each height) */
             double flux = 0;
@@ -120,8 +118,7 @@ public class Detector {
             for (int i = 0; i < peaks.size(); ++i) {
                double p = peaks.get(i);
                if (p > 0) {
-                   if (Math.abs((i * time) - prev) >= DST) { // if there is at least DST seconds betof each otherw.
-                       // System.out.println(i * time);
+                  if (Math.abs((i * time) - prev) >= DST) { // if there is at least DST seconds betof each otherw.
                      output.add(i * time);
                      count++;
                   }
@@ -130,9 +127,6 @@ public class Detector {
                }
 
             }
-
-            //System.out.println("---");
-            //System.out.println(count);
 
          }
       };
