@@ -6,7 +6,7 @@
    the current Artist name in the Metadata in the provided file. In
    the event that
  */
-package src.audio;
+package audio;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.io.PipeDecoder;
@@ -14,7 +14,7 @@ import be.tarsos.dsp.io.TarsosDSPAudioFormat;
 import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
 import be.tarsos.dsp.io.jvm.AudioPlayer;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
-import src.scene.Sound;
+import scene.Sound;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
@@ -59,14 +59,12 @@ public class Audio {
 
    public static void main(String[] args) {
 
-      /*
-      Audio a = new Audio("/home/sam/demo.mp3");
+      Audio a = new Audio("");
       a.play();
       while (!a.finished());
       a.stop();
 
       System.out.println("Done");
-      */
 
    }
 

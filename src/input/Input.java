@@ -9,12 +9,12 @@
 
  */
 
-package src.input;
+package input;
 
 import processing.core.PConstants;
-import src.clock.Clock;
-import src.event.EQ;
-import src.event.VibEvent;
+import clock.Clock;
+import event.EQ;
+import event.VibEvent;
 
 public class Input {
 

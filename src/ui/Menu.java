@@ -1,8 +1,8 @@
-package src.ui;
+package ui;
 
 import processing.core.PConstants;
-import src.event.VibEvent;
-import src.scene.Scene;
+import event.VibEvent;
+import scene.Scene;
 
 import java.util.ArrayList;
 

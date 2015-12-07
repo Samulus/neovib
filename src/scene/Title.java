@@ -1,10 +1,10 @@
-package src.scene;
+package scene;
 
 import processing.core.PConstants;
-import src.event.VibEvent;
-import src.musicdb.MusicDB;
-import src.ui.FileBrowser;
-import src.ui.Menu;
+import event.VibEvent;
+import musicdb.MusicDB;
+import ui.FileBrowser;
+import ui.Menu;
 
 import java.util.ArrayList;
 

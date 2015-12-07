@@ -16,7 +16,7 @@
 
  */
 
-package src.event;
+package event;
 
 public enum VibEvent {
 

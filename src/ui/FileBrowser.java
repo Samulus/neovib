@@ -14,15 +14,14 @@
 
  */
 
-package src.ui;
+package ui;
 
-import src.event.VibEvent;
-import src.musicdb.MusicDB;
-import src.scene.Scene;
+import event.VibEvent;
+import musicdb.MusicDB;
+import scene.Scene;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 public class FileBrowser {
 

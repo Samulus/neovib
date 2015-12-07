@@ -1,4 +1,4 @@
-package src.ui;
+package ui;
 
 public abstract class AbstractUI {
 

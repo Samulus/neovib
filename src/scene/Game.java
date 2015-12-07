@@ -10,19 +10,19 @@
 
  */
 
-package src.scene;
+package scene;
 
 import processing.core.PApplet;
-import src.audio.Audio;
-import src.audio.BeatKonducta;
-import src.audio.Detector;
-import src.event.EQ;
-import src.event.VibEvent;
-import src.input.Input;
-import src.primitives.AbstractShape;
-import src.primitives.Player;
-import src.primitives.Track;
-import src.ui.Score;
+import audio.Audio;
+import audio.BeatKonducta;
+import audio.Detector;
+import event.EQ;
+import event.VibEvent;
+import input.Input;
+import primitives.AbstractShape;
+import primitives.Player;
+import primitives.Track;
+import ui.Score;
 
 import java.io.File;
 import java.util.Iterator;

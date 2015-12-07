@@ -7,7 +7,7 @@
     artists), and accessible (returns a spanning tree of all the nodes acessible from the provided)
 */
 
-package src.musicdb;
+package musicdb;
 
 import java.io.*;
 import java.util.*;

@@ -1,9 +1,9 @@
 import processing.core.PApplet;
-import src.event.EQ;
-import src.event.VibEvent;
-import src.input.Input;
-import src.musicdb.Echonest;
-import src.scene.Scene;
+import event.EQ;
+import event.VibEvent;
+import input.Input;
+import musicdb.Echonest;
+import scene.Scene;
 
 public class Neovib extends PApplet {
 

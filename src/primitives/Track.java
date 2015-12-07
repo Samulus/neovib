@@ -1,6 +1,6 @@
-package src.primitives;
+package primitives;
 
-import src.scene.Scene;
+import scene.Scene;
 
 import java.util.LinkedList;
 

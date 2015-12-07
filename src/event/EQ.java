@@ -1,4 +1,4 @@
-package src.event;
+package event;
 
 import java.util.LinkedList;
 import java.util.Queue;

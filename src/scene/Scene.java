@@ -1,7 +1,7 @@
-package src.scene;
+package scene;
 
 import processing.core.PApplet;
-import src.event.VibEvent;
+import event.VibEvent;
 
 import java.util.HashMap;
 

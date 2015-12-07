@@ -1,9 +1,9 @@
-package src.primitives;
+package primitives;
 
 import processing.core.PConstants;
-import src.constants.VibConstant;
-import src.event.VibEvent;
-import src.scene.Scene;
+import constants.VibConstant;
+import event.VibEvent;
+import scene.Scene;
 
 public class Circle extends AbstractShape {
 

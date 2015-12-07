@@ -3,12 +3,11 @@
    ------------------
    The MusicDatabase module is the main glue between the Graph,
    Echonest, and VibArtist modules
-
  */
 
-package src.musicdb;
+package musicdb;
 
-import src.util.Util;
+import util.Util;
 
 import java.io.File;
 import java.util.*;

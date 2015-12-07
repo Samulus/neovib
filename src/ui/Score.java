@@ -1,6 +1,6 @@
-package src.ui;
+package ui;
 
-import src.scene.Scene;
+import scene.Scene;
 
 public class Score {
 

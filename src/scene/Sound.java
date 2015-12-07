@@ -1,7 +1,7 @@
-package src.scene;
+package scene;
 
-import src.event.VibEvent;
-import src.ui.Menu;
+import event.VibEvent;
+import ui.Menu;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;

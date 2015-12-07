@@ -1,8 +1,8 @@
-package src.scene;
+package scene;
 
-import src.event.VibEvent;
-import src.musicdb.MusicDB;
-import src.ui.FileBrowser;
+import event.VibEvent;
+import musicdb.MusicDB;
+import ui.FileBrowser;
 
 import java.io.File;
 

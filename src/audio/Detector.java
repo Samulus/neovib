@@ -1,4 +1,4 @@
-package src.audio;
+package audio;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;

@@ -1,8 +1,8 @@
-package src.primitives;
+package primitives;
 
-import src.constants.VibConstant;
-import src.event.VibEvent;
-import src.scene.Scene;
+import constants.VibConstant;
+import event.VibEvent;
+import scene.Scene;
 
 public class Square extends AbstractShape {
 

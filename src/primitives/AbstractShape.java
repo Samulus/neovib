@@ -1,7 +1,7 @@
-package src.primitives;
+package primitives;
 
-import src.constants.VibConstant;
-import src.scene.Scene;
+import constants.VibConstant;
+import scene.Scene;
 
 public abstract class AbstractShape {
 

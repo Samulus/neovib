@@ -1,9 +1,9 @@
-package src.ui;
+package ui;
 
-import src.event.VibEvent;
-import src.musicdb.MusicDB;
-import src.musicdb.VibArtist;
-import src.scene.Scene;
+import event.VibEvent;
+import musicdb.MusicDB;
+import musicdb.VibArtist;
+import scene.Scene;
 
 import java.util.ArrayList;
 import java.util.Set;

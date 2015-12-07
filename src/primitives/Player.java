@@ -1,8 +1,8 @@
-package src.primitives;
+package primitives;
 
-import src.clock.Clock;
-import src.event.VibEvent;
-import src.scene.Scene;
+import clock.Clock;
+import event.VibEvent;
+import scene.Scene;
 
 public class Player {
 

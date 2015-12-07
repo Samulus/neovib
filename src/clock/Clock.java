@@ -1,4 +1,4 @@
-package src.clock;
+package clock;
 
 public class Clock {
 

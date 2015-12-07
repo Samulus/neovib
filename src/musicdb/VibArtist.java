@@ -8,7 +8,7 @@
 
  */
 
-package src.musicdb;
+package musicdb;
 
 import java.io.Serializable;
 

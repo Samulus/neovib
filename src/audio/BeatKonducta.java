@@ -8,10 +8,10 @@
  * beats.
  */
 
-package src.audio;
+package audio;
 
-import src.primitives.*;
-import src.scene.Scene;
+import primitives.*;
+import scene.Scene;
 
 import java.util.LinkedList;
 

@@ -17,12 +17,12 @@
    A big thanks to Echonest for providing such an awesome API and easy to use java library!
  */
 
-package src.musicdb;
+package musicdb;
 
 import com.echonest.api.v4.Artist;
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
-import src.clock.Clock;
+import clock.Clock;
 
 import java.io.BufferedReader;
 import java.io.File;

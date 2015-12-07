@@ -1,4 +1,4 @@
-package src.util;
+package util;
 
 import java.io.File;
 import java.util.ArrayList;

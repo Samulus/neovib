@@ -1,6 +1,6 @@
-package src.constants;
+package constants;
 
-import src.scene.Scene;
+import scene.Scene;
 
 public class VibConstant {
 
