@@ -26,3 +26,4 @@ cache/
 
 # avoid leaking API key
 src/musicdb/Secret.java
+apikey.txt
