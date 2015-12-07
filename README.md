@@ -1,5 +1,5 @@
 # neovib
-neovib is a simple rhthym game inspired by classic rhthym games like Osu!
+neovib is a simple rhythm game inspired by classic rhythm games like Osu!
 and Vib-Ribbon. In Neovib the user provides an audio file / selects a random
 audio file from their music library and the game will automatically generate
 obstacles that coincide with musical onsets in the game. It's an early state
