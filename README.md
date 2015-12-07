@@ -23,4 +23,7 @@ currently but works on Linux.
 
 # Try It
 Neovib requires java8. The project doesn't correctly import in Eclipse at the moment but works 
-fine in Intellij. You can try it without compiling it by downloading the folder dist.zip but 
+fine in Intellij. You can try it without compiling it by downloading the folder dist.zip but
+JSound / JavaSound is *inherently broken* on multiple platforms and may not work unless you do
+device specific hacks to get it functioning. I'm planning on switching to OpenAL soon
+to bypass this.
