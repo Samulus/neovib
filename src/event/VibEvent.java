@@ -20,72 +20,59 @@ package src.event;
 
 public enum VibEvent {
 
-    ERROR_CODE(-1),
+   ERROR_CODE(-1),
 
-    /* User Input (0-100) */
-    INPUT_UP(0),
-    INPUT_DOWN(1),
-    INPUT_LEFT(2),
-    INPUT_RIGHT(3),
+   /* User Input (0-100) */
+   INPUT_UP(0),
+   INPUT_DOWN(1),
+   INPUT_LEFT(2),
+   INPUT_RIGHT(3),
 
-    INPUT_ACCEPT(4),
-    INPUT_PREVIOUS(5),
-    INPUT_CANCEL(6),
-    INPUT_MARK_DIR(7),
+   INPUT_ACCEPT(4),
+   INPUT_PREVIOUS(5),
+   INPUT_CANCEL(6),
+   INPUT_MARK_DIR(7),
 
-    INPUT_DODGE_CROSS(8),
-    INPUT_DODGE_SQUARE(9),
-    INPUT_DODGE_CIRCLE(10),
-    INPUT_DODGE_TRIANGLE(11),
+   INPUT_DODGE_CROSS(8, "Cross"),
+   INPUT_DODGE_SQUARE(9, "Square"),
+   INPUT_DODGE_CIRCLE(10, "Circle"),
+   INPUT_DODGE_TRIANGLE(11, "Triangle"),
 
-    INPUT_LENGTH(12), // how large
+   INPUT_LENGTH(12), // how large
 
-    /* Scenes (100-150) */
-    SCENE_TITLE(100, "Title", 200),
-    SCENE_GAME(101, "Game", 20),
-    SCENE_SOUND_SETTINGS(102, "Sound Settings", 200),
-    SCENE_BROWSER(103, "Browser", 200),
-    SCENE_PAUSE(104, "Pause", 200),
-    SCENE_SIMILAR(105, "Similar", 200);
+   /* Scenes (100-150) */
+   SCENE_TITLE(100, "Title"),
+   SCENE_GAME(101, "Game"),
+   SCENE_SOUND(102, "Sound"),
+   SCENE_BROWSER(103, "Browser"),
+   SCENE_PAUSE(104, "Pause");
 
-    private final int code;
-    private String str = "";
-    private int msBetweenPress = 0;
+   private final int code;
+   private String str;
 
-    VibEvent(int code, String str, int msBetweenPress) {
-        this.code = code;
-        this.str = str;
-        this.msBetweenPress = msBetweenPress;
-    }
+   VibEvent(int code, String str) {
+      this.code = code;
+      this.str = str;
+   }
 
-    VibEvent(int code, String str) {
-        this.code = code;
-        this.str = str;
-    }
+   VibEvent(int code) {
+      this.code = code;
+      this.str = "";
+   }
 
-    VibEvent(int code) {
-        this.code = code;
-        this.str = "";
-    }
+   public boolean isScene() {
+      return (this.code >= 100 && this.code <= 105);
+   }
 
-    public boolean isScene() {
-        return (this.code >= 100 && this.code <= 105);
-    }
+   public boolean isNavigate() {
+      return (this.code >= 0 && this.code <= 12);
+   }
 
-    public boolean isNavigate() {
-        return (this.code >= 0 && this.code <= 12);
-    }
+   public int getCode() {
+      return code;
+   }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getStr() {
-        return this.str;
-    }
-
-    public int getMSBetweenPress() {
-        return this.msBetweenPress;
-    }
-
+   public String getStr() {
+      return this.str;
+   }
 }
