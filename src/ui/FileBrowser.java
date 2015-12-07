@@ -62,6 +62,8 @@ public class FileBrowser {
       for (int i = 0; i < flist.length; ++i) {
          list.add(flist[i].getName());
       }
+      Collections.sort(list);
+      Arrays.sort(flist);
       menu.refresh(list);
       menu.reset();
    }
