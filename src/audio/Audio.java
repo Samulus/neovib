@@ -1,3 +1,11 @@
+/*
+   Audio.java
+   ----------
+   The Audio module is responsible for interfacing with TarsosDSP
+   and providing an API for us to play a song, stop a song, and get
+   the current Artist name in the Metadata in the provided file. In
+   the event that
+ */
 package src.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -6,106 +14,131 @@ import be.tarsos.dsp.io.TarsosDSPAudioFormat;
 import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
 import be.tarsos.dsp.io.jvm.AudioPlayer;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
+import src.scene.Sound;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
 
 public class Audio {
 
-    AudioPlayer song;
-    File f;
-    float[] beats;
-    private double previousFrame;
-    private double lastReport;
-    private double songPos;
-    private Thread playThread;
-    private AudioDispatcher dispatch;
-    private AudioPlayer ap;
-    private TarsosDSPAudioFormat fmt;
-    private String artist;
+   private double previousFrame;
+   private double lastReport;
+   private double lastDispatchTime = -1;
+   private double songPos;
+   private Thread playThread;
+   private AudioDispatcher dispatch;
+   private TarsosDSPAudioFormat fmt;
+   private String artist; // filename is stored in event Artist cannot be parsed from FFMPEG.
+   private String title;
 
-    public Audio(String fpath) {
-        this.f = new File(fpath);
+
+   public Audio(String fpath) {
+      File file = new File(fpath);
+      AudioPlayer ap;
 
       /* Load Song w/ FFMPEG */
-        try {
-            //dispatch = AudioDispatcherFactory.fromFile(f.getCanonicalFile(), 1024,0);
-            dispatch = AudioDispatcherFactory.fromPipe(f.getCanonicalPath(), 44100, 1024, 0);
-            fmt = dispatch.getFormat();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      try {
+         dispatch = AudioDispatcherFactory.fromPipe(file.getCanonicalPath(), 44100, 1024, 0);
+         fmt = dispatch.getFormat();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
 
-      /* Create Audio Player */
-        try {
-            ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt)); // remove 1024 when on chromebook
-            dispatch.addAudioProcessor(ap);
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
+        /* Create Audio Player */
+      try {
+         System.out.println(Sound.getSelectedMixer());
+         ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), Sound.getSelectedMixer(), 1024); // remove 1024 when on chromebook
+         dispatch.addAudioProcessor(ap);
+      } catch (LineUnavailableException e) {
+         e.printStackTrace();
+      }
 
-    public static void main(String[] args) {
-        String fpath = "audio/xchange.mp3";
-        Audio a = new Audio(fpath);
-        System.out.println(parseArtist(fpath));
-        a.play();
-    }
+      parseArtist(fpath);
+      if (artist.equals("")) artist = file.getName();
+   }
 
-    public static String parseArtist(String fpath) {
-        String artist = "";
-        PipeDecoder pipe = new PipeDecoder();
-        try {
-            String ffout = pipe.ffinfo(fpath);
-            String original = ffout;
-            ffout = ffout.toLowerCase();
-            int apos = ffout.indexOf("artist");
-            String sub = ffout.substring(apos);
-            int colon = sub.indexOf(":");
-            int end = sub.indexOf("\n");
-            artist = original.substring(apos + colon + 1, apos + end).trim();
-        } catch (Exception e) {
-            artist = "";
-        }
+   public static void main(String[] args) {
 
-        return artist;
-    }
+      /*
+      Audio a = new Audio("/home/sam/demo.mp3");
+      a.play();
+      while (!a.finished());
+      a.stop();
 
-    public void play() {
-        previousFrame = System.nanoTime() / 1000000.0;
-        lastReport = 0;
-        songPos = 0;
-        if (dispatch != null) {
-            playThread = new Thread(dispatch);
-            playThread.start();
-            //new Thread(dispatch).start();
-        }
-    }
+      System.out.println("Done");
+      */
 
-    // call each frame
-    public double getPosition() {
-        double ptime = System.nanoTime() / 1000000;
-        songPos += ptime - previousFrame;
-        previousFrame = ptime;
+   }
 
-        if (dispatch != null) {
-            double minimPos = dispatch.secondsProcessed() * 1000;
-            if (Math.abs(minimPos - lastReport) >= 0.1) {
-                songPos = (songPos + minimPos) / 2;  // easing
-                lastReport = minimPos;
-            }
-        }
+   public String getTitle() {
+      return title;
+   }
 
-        return songPos;
-    }
+   public String getArtist() {
+      return this.artist;
+   }
 
-    public void stop() {
-        dispatch.stop();
-        playThread.interrupt();
-    }
+   private String subArtist(String haystack, String field) {
+      String original = haystack;
+      haystack = haystack.toLowerCase();
+      int apos = haystack.indexOf(field);
+      String sub = haystack.substring(apos);
+      int colon = sub.indexOf(":");
+      int end = sub.indexOf("\n");
+      return original.substring(apos + colon + 1, apos + end).trim();
+   }
 
-    public String getArtist() {
-        return "Stub";
-    }
+   private void parseArtist(String fpath) {
+      PipeDecoder pipe = new PipeDecoder();
+      try {
+         String ffout = pipe.ffinfo(fpath);
+         artist = subArtist(ffout, "artist");
+         title = subArtist(ffout, "title");
+      } catch (Exception e) {
+         artist = "";
+         title = "";
+      }
+   }
+
+   public void play() {
+      previousFrame = System.nanoTime() / 1000000.0;
+      lastReport = 0;
+      songPos = 0;
+      if (dispatch != null) {
+         playThread = new Thread(dispatch);
+         playThread.start();
+      }
+   }
+
+   // avoids desync by using audio timer + personal timer and returning
+   // the average of the two when either begins to drift
+   public double getPosition() {
+      double ptime = System.nanoTime() / 1000000;
+      songPos += ptime - previousFrame;
+      previousFrame = ptime;
+
+      if (dispatch != null) {
+         double minimPos = dispatch.secondsProcessed() * 1000;
+         if (Math.abs(minimPos - lastReport) >= 0.1) {
+            songPos = (songPos + minimPos) / 2;
+            lastReport = minimPos;
+         }
+      }
+
+
+      return songPos;
+   }
+
+   public boolean finished() {
+      return (this.getPosition() - dispatch.secondsProcessed() * 1000) > 2000;
+   }
+
+   public void props() {
+   }
+
+   public void stop() {
+      dispatch.stop();
+      playThread.interrupt();
+   }
 
 }
