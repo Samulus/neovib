@@ -44,7 +44,7 @@ public class Audio {
          e.printStackTrace();
       }
 
-        /* Create Audio Player */
+      /* Create Audio Player */
       try {
          System.out.println(Sound.getSelectedMixer());
          ap = new AudioPlayer(JVMAudioInputStream.toAudioFormat(fmt), Sound.getSelectedMixer(), 1024); // remove 1024 when on chromebook
@@ -61,7 +61,7 @@ public class Audio {
 
       Audio a = new Audio("");
       a.play();
-      while (!a.finished());
+      while (!a.finished()) ;
       a.stop();
 
       System.out.println("Done");
