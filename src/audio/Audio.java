@@ -28,7 +28,7 @@ public class Audio {
    private Thread playThread;
    private AudioDispatcher dispatch;
    private TarsosDSPAudioFormat fmt;
-   private String artist; // filename is stored in event Artist cannot be parsed from FFMPEG.
+   private String artist; // Audio uses filename if the artist is an empty string
    private String title;
 
 
