@@ -22,6 +22,10 @@ currently but works on Linux.
 |f      | Press when a Triangle is coming |
 |Esc    | Quit Game|
 
+# Dependencies
+Neovib requires ffmpeg. TarsosDSP will attempt to download it for you but your milage may vary and its best
+to install it yourself.
+
 # Try It
 Neovib requires java8. The project doesn't correctly import in Eclipse at the moment but works 
 fine in Intellij. You can try it without compiling it by downloading the folder dist.zip but
