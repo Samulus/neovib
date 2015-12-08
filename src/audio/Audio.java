@@ -2,10 +2,10 @@
    Audio.java
    ----------
    The Audio module is responsible for interfacing with TarsosDSP
-   and providing an API for us to play a song, stop a song, and get
-   the current Artist name in the Metadata in the provided file. In
-   the event that
+   and providing an API for us to play a song, stop a song, and getting
+   the current Artist name in the Metadata in the provided file.
  */
+
 package audio;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -128,7 +128,7 @@ public class Audio {
    }
 
    public boolean finished() {
-      return (this.getPosition() - dispatch.secondsProcessed() * 1000) > 2000;
+      return (this.getPosition() - dispatch.secondsProcessed() * 1000) > 2000; // TODO: magic number
    }
 
    public void props() {

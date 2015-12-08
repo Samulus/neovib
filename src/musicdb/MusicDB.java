@@ -1,8 +1,20 @@
 /*
    MusicDatabase.java
    ------------------
-   The MusicDatabase module is the main glue between the Graph,
-   Echonest, and VibArtist modules
+   The MusicDatabase.java is the main module responsible for interfacing
+   with the Graph.java, Echonest.java, and VibArtist.java modules. The
+   relationship between the three is as follows:
+
+   This class provides utility functions to the rest of the game so that it can
+   set a MusicLibrary path in memory. If the MusicLibrary path HAS been set then
+   we enable the Select Random Song option in the Pause menu. Otherwise it is disabled.
+   In addition to this if a MusicLibrary path has been set AND EchoNEST is currently connected
+   then the Pause module will call SimilarArtists in an attempt to look up Artists similar to the
+   one that we just played.
+
+   If we can't find that Artist in the Graph that's serialized  offline in db/similar.db then we will
+   attempt to snatch it from the Echonest API, serialize it offline, and then return that artist
+   to the Pause module in the form of a sorted Treeset.
  */
 
 package musicdb;
@@ -43,10 +55,10 @@ public class MusicDB {
       Collections.shuffle(MusicDB.db);
 
       for (String fpath : MusicDB.db) {
-         String p = fpath.toLowerCase();
+         String p = fpath.toLowerCase(); // TODO: there should be an array of valid extensions in VibConstants
          if (p.endsWith(".mp3") || p.endsWith(".flac")
                  || p.endsWith(".m4a")
-                 || p.endsWith("ogg")) {
+                 || p.endsWith("ogg") || p.endsWith(".wma")) {
             return fpath;
          }
       }

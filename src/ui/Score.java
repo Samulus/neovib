@@ -1,3 +1,9 @@
+/*
+   Score.java
+   ----------
+   A barebones score system. I would implement more if I had more time ;-(
+ */
+
 package ui;
 
 import scene.Scene;
@@ -5,7 +11,6 @@ import scene.Scene;
 public class Score {
 
    public int total;
-   public int consecutive;
    public float amt;
 
    public void render() {
@@ -20,7 +25,6 @@ public class Score {
 
    public void reset() {
       total = 0;
-      consecutive = 0;
       amt = 0;
    }
 
@@ -29,7 +33,6 @@ public class Score {
    }
 
    public void miss() {
-      consecutive = 0;
       amt = 0;
    }
 }

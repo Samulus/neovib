@@ -1,3 +1,14 @@
+/*
+   Menu.java
+   ---------
+   The Menu module is responsible for rendering every single Menu you see in the game.
+   The FileBrowser module also uses the Menu module internally as well. You can pass
+   in true to the constructor to specify you don't want the ability to scroll. Otherwise pass in false.
+   Also pass in an ArrayList of values that you want to show up. Then each frame in your Scene call
+   the render and navigate methods in the appropriate callbacks (render and input) so that the
+   menu renders everytime.
+ */
+
 package ui;
 
 import processing.core.PConstants;

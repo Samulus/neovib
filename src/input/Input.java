@@ -4,13 +4,18 @@
 
     The Input module is responsible for polling the user input
     and detecting which keys are being held, it only allows users
-    to within VibEvent.getMSBetweenPress() so that they can't scroll
-    too fast in a Scene's menu or cheat by simply holding a button down.
+    to repeatedly trigger at whatever VibConstant.MIN_DELAY is set at.
+
+    I included the depress and isDown methods for the Game module so that
+    it would have low latency access to the keyboard so that it could perform
+    more reliable beat detection without relying on the events traveling
+    through the system fast enough.
 
  */
 
 package input;
 
+import constants.*;
 import processing.core.PConstants;
 import clock.Clock;
 import event.EQ;
@@ -39,13 +44,11 @@ public class Input {
 
       if (held) {
          double now = time.elapsedTime();
-         if (now - lastTime < 130) return;
+         if (now - lastTime < VibConstant.MIN_DELAY) return;
          lastTime = now;
       }
 
-      /* leave the return to avoid enqueing a ton of events by accident */
-      /* and locking the system up */
-      if (!held) return;
+      if (!held) return; /* avoid locking up system */
 
       /* General Traversal */
       if (pressed[VibEvent.INPUT_DOWN.getCode()]) EQ.enqueue(VibEvent.INPUT_DOWN);

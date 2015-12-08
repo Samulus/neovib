@@ -1,3 +1,9 @@
+/*
+   Title.java
+   ----------
+   The title module is responsible for rendering the main menu in the game.
+
+ */
 package scene;
 
 import processing.core.PConstants;

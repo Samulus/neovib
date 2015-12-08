@@ -1,3 +1,11 @@
+/*
+   Pause.java
+   ----------
+   This is the pause screen. The name is kind of a misnomer because you can only try
+   again or return to the browser.
+
+ */
+
 package scene;
 
 import event.VibEvent;

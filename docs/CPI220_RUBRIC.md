@@ -125,3 +125,9 @@ from memory. This way only the things that are onscreen are rendered and nothing
 All of the algorithms in the code are basically proportional to n (with the exception
 of Timsort and stuff). The main detection algorithm iterates over each sample exactly once 
 so the amount of time it takes for it to run corresponds to the length of the song linearlly.
+
+
+!! NEED TO TALK ABOUT
+* Float -> Double Problem
+* How I figured out how to scroll beats in time with the music
+* How I 

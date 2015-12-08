@@ -1,3 +1,10 @@
+/*
+   Clock.java
+   -----------
+   A simple timer used in various classes.
+
+ */
+
 package clock;
 
 public class Clock {

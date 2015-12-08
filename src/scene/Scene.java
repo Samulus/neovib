@@ -1,3 +1,14 @@
+/*
+   Scene.java
+   ----------
+   The Scene class is responsible for managing the various states in the game. Every
+   single Scene in the game should extend the Abstract class AbstractScene and implement
+   the required callbacks -> {input(VibEvent e), logic(), render(), pass()}
+   Then in this class the Scene should be inserted in the HashMap. This way we can just call
+   Scene.focus(VibEvent.SCENE_BLAH) and automatically start displaying that Scene in the game.
+
+ */
+
 package scene;
 
 import processing.core.PApplet;

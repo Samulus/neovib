@@ -1,11 +1,19 @@
 /*
- * BeatKonducta.java
- * -------------------
- * The BeatKonducta module is responsible for determining when the next beat
- * is scheduled to occur. It accepts a list of Beats and destructively removes and
- * examines where
- * The BeatKonducta is responsible for accepting an Audio object and a LinkedList<Double> of
- * beats.
+   BeatKonducta.java
+   ------------------
+   The BeatKonducta module is responsible for determining when the next beat needs to scroll on the screen.
+   It creates a LinkedLists of AbstractShapes and accepts an audio file + a list of beats that coincide with times
+   in that song. The way the algorithm works is by basically determining how long it would take a
+   given beat in a song to reach the point of the screen thats at Scene.p.width / 7f; (aka where the player is)
+
+   So we continually recalculate what the speed of the next shape would be if it were to reach the player's position.
+   While this speed is less than some value (right now 15) don't add a new obstacle and end prematurely. Otherwise
+   we need to add a new obstacle so we eliminate this beat from the linkedlist (popFirst) and generate the obstacle
+   Then we repeat the process.
+
+   A smarter algorithm would map out ahead of time all the times when we should start scrolling a beat so that it
+   didn't make the CPU calculate as much but I don't have the time to implement this right now unfortunately.
+
  */
 
 package audio;
@@ -38,9 +46,8 @@ public class BeatKonducta {
    public void deleteOld() {
       if (!render.isEmpty()) {
          AbstractShape s = render.getFirst();
-         if (s.getDistance() <= Scene.p.width / 7) {
+         if (s.getDistance() <= Scene.p.width / 7) { // TODO: magic number
             render.removeFirst();
-            System.out.println("removing");
          }
       }
    }
@@ -60,7 +67,7 @@ public class BeatKonducta {
       double speed = calcSpeed(beatTime);
 
       // higher = delay time until beat can enter (aka note scroll speed)
-      if (speed < 15)
+      if (speed < 15) // TODO: magic number
          return true;
 
       impeding.add(this.beat.pollFirst());
@@ -94,7 +101,7 @@ public class BeatKonducta {
 
       double pos = audio.getPosition();
       double dst = (beatTime * 1000) - pos; // where beat time is in seconds, pos in miliseconds
-      double travel = (Scene.p.width - (Scene.p.width / 7f));
+      double travel = (Scene.p.width - (Scene.p.width / 7f)); // TODO magic numbers
       double framesWeNeedToMoveIn = 60 * dst / 1000;
       double speed = (travel / framesWeNeedToMoveIn); // 1024 travel px  / 240 frames = scroll at 4.26 px / frame;
       return speed;

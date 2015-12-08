@@ -1,3 +1,10 @@
+/*
+   Util.java
+   ---------
+   The Utility package consists of a hodgepoge of various functionality.
+
+ */
+
 package util;
 
 import java.io.File;

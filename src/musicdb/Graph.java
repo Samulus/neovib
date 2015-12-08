@@ -75,7 +75,6 @@ public class Graph<T> implements Serializable {
 
       Graph<String> graph = new Graph<String>();
 
-      /*
       graph.addNode("MF DOOM");
       graph.addNode("Percee P");
       graph.addNode("Madlib");
@@ -98,10 +97,8 @@ public class Graph<T> implements Serializable {
       System.out.println("From MF DOOM you can access:");
       System.out.println(graph.accessible("MF DOOM"));
       System.out.println("\n[OK ✓] Graph.java");
-      */
 
-      //Graph.Serialize(graph, "db/test.db");
-
+      Graph.Serialize(graph, "db/test.db");
       Graph<String> g = Graph.Deserialize("db/test.db");
       System.out.println(g.accessible("MF DOOM"));
    }

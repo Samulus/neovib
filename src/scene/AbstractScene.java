@@ -1,3 +1,11 @@
+/*
+   AbstractScene.java
+   ------------------
+   This is the AbstractScene module. Every Scene in the game should extend and implement
+   these callbacks. This way the Scene.java module knows how to do the appropriate actions for each
+   Scene.
+ */
+
 package scene;
 
 import event.VibEvent;

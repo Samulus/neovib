@@ -1,3 +1,10 @@
+/*
+   Browser.java
+   ------------
+   The browser is a Scene that basically is an empty shell for using a FileBrowser
+   ui element.
+
+ */
 package scene;
 
 import event.VibEvent;

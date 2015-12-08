@@ -1,3 +1,11 @@
+/*
+   SimilarAritsts.java
+   --------------------
+   The SimilarArtists module is responsible for drawing a list of artists similar
+   to the one provided. First scene should call the setup method with an Artist they have
+   in mind and then it should call render every frame.
+ */
+
 package ui;
 
 import event.VibEvent;
@@ -40,8 +48,6 @@ public class SimilarArtists {
       Scene.p.popMatrix();
    }
 
-   public void input(VibEvent event) {
-      //menu.navigate(event);
-   }
+   public void input(VibEvent event) {}
 
 }

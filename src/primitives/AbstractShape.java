@@ -1,3 +1,11 @@
+/*
+   AbstractShape.java
+   ------------------
+
+   The abstract shape module is a parent class for all the various geometric shapes in the game.
+   They all share the same code for coding the color / type of information so it makes sense to group them.
+
+ */
 package primitives;
 
 import constants.VibConstant;

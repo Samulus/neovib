@@ -11,7 +11,7 @@ public class VibConstant {
    public static int HIT_COLOR[] = {126, 188, 140};
    public static int MISS_COLOR[] = {213, 24, 81};
 
-   /* Module Constants */
-   //public static int
+   /* Input */
+   public static int MIN_DELAY = 130;
 
 }

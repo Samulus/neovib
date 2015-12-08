@@ -9,9 +9,7 @@
 
    Essentially FileBrowser is a lightweight scene that gets overlaid on the current scene.
 
-   TODO: fix the bug where if I go into the root folder or some other
-   erroneous folder I can't get back out.
-
+   TODO: fix the bug where if I go into the root folder or some other erroneous folder I can't get back out.
  */
 
 package ui;
