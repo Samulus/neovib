@@ -38,7 +38,8 @@ public enum VibEvent {
    INPUT_DODGE_CIRCLE(10, "Circle"),
    INPUT_DODGE_TRIANGLE(11, "Triangle"),
 
-   INPUT_LENGTH(12), // how large
+   INPUT_LENGTH(12), // corresponds to the number of enums prefixed with INPUT
+                     // this way the Input module knows how large to make the bool[] pressed;
 
    /* Scenes (100-150) */
    SCENE_TITLE(100, "Title"),
@@ -58,14 +59,6 @@ public enum VibEvent {
    VibEvent(int code) {
       this.code = code;
       this.str = "";
-   }
-
-   public boolean isScene() {
-      return (this.code >= 100 && this.code <= 105);
-   }
-
-   public boolean isNavigate() {
-      return (this.code >= 0 && this.code <= 12);
    }
 
    public int getCode() {
