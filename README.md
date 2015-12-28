@@ -8,6 +8,9 @@ currently but works on Linux.
 # Screenshot
 ![neovib](docs/screenshot.png)
 
+# Gameplay Video
+https://www.youtube.com/watch?v=uvpfZO1zcG4
+
 # Controls
 
 |Button | Action|
