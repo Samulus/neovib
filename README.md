@@ -9,7 +9,7 @@ currently but works on Linux.
 ![neovib](docs/screenshot.png)
 
 # Gameplay Video
-https://www.youtube.com/watch?v=uvpfZO1zcG4
+[![Neovib Gameplay](http://img.youtube.com/vi/uvpfZO1zcG4/0.jpg)](http://www.youtube.com/watch?v=YuvpfZO1zcG4)
 
 # Controls
 
